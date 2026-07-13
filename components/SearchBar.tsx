@@ -87,31 +87,32 @@ export default function SearchBar({ compact = false, hero = false }: Props) {
   /* ── COMPACT (listings page top bar) ── */
   if (compact) {
     return (
-      <form onSubmit={handleSearch} className="flex flex-wrap gap-2">
-        <div className="flex-1 min-w-[160px] relative">
+      <form onSubmit={handleSearch} className="flex gap-2">
+        <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted pointer-events-none" />
           <input
             type="text"
             value={query}
             onChange={e => setQuery(e.target.value)}
-            placeholder="Search..."
+            placeholder="Search by location or type..."
             className={`${inputClass} pl-9 w-full`}
           />
         </div>
-        <select value={neighborhood} onChange={e => setNeighborhood(e.target.value)} className={selectClass} aria-label="Neighborhood">
+        {/* Selects hidden on mobile — covered by the filter drawer */}
+        <select value={neighborhood} onChange={e => setNeighborhood(e.target.value)} className={`${selectClass} hidden sm:block`} aria-label="Neighborhood">
           <option value="">All Neighborhoods</option>
           {neighborhoods.map(n => <option key={n} value={n}>{n}</option>)}
         </select>
-        <select value={type} onChange={e => setType(e.target.value)} className={selectClass} aria-label="Property type">
+        <select value={type} onChange={e => setType(e.target.value)} className={`${selectClass} hidden sm:block`} aria-label="Property type">
           <option value="">Any Type</option>
           {propertyTypes.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
         </select>
         <button
           type="submit"
-          className="flex items-center justify-center gap-2 bg-ghana-green text-white font-semibold text-sm px-5 py-3 rounded-btn hover:bg-ghana-green-dark transition-colors flex-shrink-0"
+          className="flex items-center justify-center gap-2 bg-ghana-green text-white font-semibold text-sm px-4 py-3 rounded-btn hover:bg-ghana-green-dark transition-colors flex-shrink-0"
         >
           <Search className="w-4 h-4" />
-          Search
+          <span className="hidden sm:inline">Search</span>
         </button>
       </form>
     )

@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Menu, X, Plus } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -14,10 +14,25 @@ const links = [
 
 export default function Nav() {
   const pathname = usePathname()
-  const [open, setOpen] = useState(false)
+  const [open,    setOpen]    = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  const isHome = pathname === '/'
 
   return (
-    <header className="fixed top-0 inset-x-0 z-50 h-16 bg-white/98 backdrop-blur-sm border-b border-border-col shadow-nav">
+    <header className={cn(
+      'fixed top-0 inset-x-0 z-50 h-16 transition-all duration-300',
+      isHome && !scrolled
+        ? 'bg-white border-b border-transparent shadow-none'
+        : 'bg-white border-b border-border-col shadow-nav'
+    )}>
       <div className="max-w-content mx-auto px-4 lg:px-8 h-full flex items-center justify-between gap-6">
 
         {/* Logo */}

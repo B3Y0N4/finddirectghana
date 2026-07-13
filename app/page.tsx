@@ -65,9 +65,9 @@ export default function HomePage() {
         />
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-bl from-ghana-green/15 to-transparent pointer-events-none" />
 
-        <div className="relative max-w-content mx-auto px-4 lg:px-8 pt-24 pb-14">
+        <div className="relative max-w-content mx-auto px-4 lg:px-8 pt-20 pb-10 sm:pt-28 sm:pb-14">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 bg-ghana-gold/15 border border-ghana-gold/30 rounded-badge px-3 py-1.5 mb-6">
+            <div className="inline-flex items-center gap-2 bg-ghana-gold/15 border border-ghana-gold/30 rounded-badge px-3 py-1.5 mb-5">
               <span className="w-1.5 h-1.5 rounded-full bg-ghana-gold animate-pulse" />
               <span className="text-ghana-gold text-xs font-bold tracking-wide">
                 Ghana&apos;s First Owner-Direct Rental Platform
@@ -76,13 +76,13 @@ export default function HomePage() {
 
             <h1
               className="font-display font-bold text-white mb-4 leading-[1.1]"
-              style={{ fontSize: 'clamp(2rem,5vw,3.75rem)' }}
+              style={{ fontSize: 'clamp(1.75rem,6vw,3.75rem)' }}
             >
               Find your next home.<br />
               <span className="text-ghana-gold">Directly from the owner.</span>
             </h1>
 
-            <p className="text-white/55 text-lg leading-relaxed mb-8 max-w-xl">
+            <p className="text-white/55 text-base sm:text-lg leading-relaxed mb-7 max-w-xl">
               No agents. No viewing fees. No commission. Browse verified listings and
               contact landlords directly on WhatsApp.
             </p>
@@ -130,7 +130,7 @@ export default function HomePage() {
       <section className="bg-white border-b border-border-col">
         <div className="max-w-content mx-auto px-4 lg:px-8 py-5">
           <p className="text-[10px] font-bold text-muted uppercase tracking-widest mb-3">Browse by type</p>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex gap-2 overflow-x-auto no-scrollbar pb-0.5">
             <Link
               href="/listings"
               className="flex items-center gap-2 px-4 py-2 border-2 border-ghana-green bg-ghana-green text-white rounded-btn text-sm font-semibold hover:bg-ghana-green-dark transition-colors"

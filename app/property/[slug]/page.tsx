@@ -7,6 +7,7 @@ import {
   Phone, Calendar, Eye, ArrowLeft, Home, Star, AlertTriangle,
 } from 'lucide-react'
 import PropertyCard from '@/components/PropertyCard'
+import PropertyContactBar from '@/components/PropertyContactBar'
 import { properties } from '@/lib/properties'
 import { formatPrice, propertyTypeLabel, bedroomLabel, waLink } from '@/lib/utils'
 
@@ -40,7 +41,7 @@ export default async function PropertyPage({ params }: Props) {
   const isRented = p.status === 'rented'
 
   return (
-    <div className="pt-nav">
+    <div className="pt-nav pb-20 lg:pb-0">
       {/* Breadcrumb */}
       <div className="border-b border-border-col bg-white">
         <div className="max-w-content mx-auto px-4 lg:px-8 py-3 flex items-center gap-2 text-xs text-muted">
@@ -296,6 +297,14 @@ export default async function PropertyPage({ params }: Props) {
             </div>
           </div>
         </div>
+
+        {/* Mobile sticky WhatsApp bar */}
+        <PropertyContactBar
+          phone={p.owner.phone}
+          title={p.title}
+          price={p.price_ghs}
+          isRented={isRented}
+        />
 
         {/* Related listings */}
         {related.length > 0 && (

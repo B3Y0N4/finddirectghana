@@ -135,7 +135,7 @@ export default async function ListingsPage({ searchParams }: Props) {
         </div>
       </div>
 
-      <div className="max-w-content mx-auto px-4 lg:px-8 py-8">
+      <div className="max-w-content mx-auto px-4 lg:px-8 py-8 pb-24 lg:pb-8">
         <div className="flex flex-col lg:flex-row gap-7">
 
           {/* Sidebar */}

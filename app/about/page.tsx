@@ -16,10 +16,10 @@ export default function AboutPage() {
           <div className="max-w-2xl">
             <p className="text-ghana-gold text-xs font-semibold tracking-widest uppercase mb-5">Our Story</p>
             <h1 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl leading-tight mb-6">
-              We are fixing Ghana&apos;s rental market — one verified listing at a time.
+              Ghana does not need to wait for someone else to fix this. We are here.
             </h1>
             <p className="text-white/65 text-lg leading-relaxed">
-              Find Direct Ghana was born from a simple frustration: why should a tenant pay GHS 300 just to view a property that doesn&apos;t match what was described? Why should a landlord lose 10% of rent to an agent whose only contribution was a phone call?
+              Find Direct Ghana was not built in a boardroom in London or Silicon Valley. It was built by Ghanaians who have sat in the same frustrating WhatsApp groups, paid the same unfair viewing fees, and watched the same system take advantage of our people for too long.
             </p>
           </div>
         </div>
@@ -99,22 +99,25 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Inspiration */}
-      <section className="py-16 lg:py-20 bg-white">
+      {/* Built for Ghana */}
+      <section className="py-16 lg:py-20 bg-ghana-green-dark text-white">
         <div className="max-w-content mx-auto px-4 lg:px-8">
           <div className="max-w-2xl mx-auto">
-            <p className="text-ghana-green text-xs font-semibold tracking-widest uppercase mb-4">Inspiration</p>
-            <h2 className="font-display font-bold text-ink text-2xl sm:text-3xl mb-6">
-              Built on a proven model — adapted for Ghana
+            <p className="text-ghana-gold text-xs font-semibold tracking-widest uppercase mb-4">Ghanaian to the Core</p>
+            <h2 className="font-display font-bold text-white text-2xl sm:text-3xl mb-6">
+              Built for Ghanaians, by Ghanaians — with every bit of pride that comes with it.
             </h2>
-            <p className="text-muted leading-relaxed mb-4">
-              In Turkey, there is a platform called <strong className="text-ink">Sahibinden.com</strong>. Its name literally translates to &quot;from the owner&quot; — and that is exactly what it delivers. It is Turkey&apos;s most visited website, with 30 million monthly users, and it was built entirely around one promise: connect buyers directly to sellers, and let both parties benefit from cutting out the middleman.
+            <p className="text-white/70 leading-relaxed mb-5">
+              Ghana was the first country in sub-Saharan Africa to declare independence. We did not wait for someone to free us — we stood up and said: this belongs to us. That same spirit lives in everything we build. Find Direct Ghana is not a foreign platform adapted for our market. It was conceived here, designed here, and built by people who know these streets, these neighbourhoods, and the real cost of what our people have been putting up with.
             </p>
-            <p className="text-muted leading-relaxed mb-4">
-              Sahibinden started with real estate and vehicles and grew into a full classifieds marketplace. It took years and built network effects that no competitor has displaced. Today it powers billions in transactions across real estate, cars, jobs, and more.
+            <p className="text-white/70 leading-relaxed mb-5">
+              We grew up watching our parents negotiate with agents, pay fees they could not afford, and hand over years of rent to strangers because there was no system in place to protect them. We felt the weight of a rental market that treated Ghanaians as if they did not deserve better. We felt it personally. And we refused to accept it.
             </p>
-            <p className="text-muted leading-relaxed">
-              Ghana does not have a Sahibinden. The rental market pain points here are more severe than Turkey ever experienced. The opportunity to build something trusted, owner-direct, and mobile-first for the Ghanaian context is enormous — and entirely unclaimed. That is what Find Direct Ghana is building.
+            <p className="text-white/70 leading-relaxed mb-5">
+              Every decision on this platform — from how search works, to how landlords are verified, to why we will never charge a viewing fee — was made by Ghanaians, for Ghanaians. Not as a charity. Not as a favour. But because Ghana deserves a rental market that reflects who we are: warm, honest, resourceful, and proud.
+            </p>
+            <p className="text-ghana-gold font-semibold leading-relaxed text-lg">
+              Ghana Beyond Aid is not just a government policy. It is a mindset. We build our own solutions. This is ours.
             </p>
           </div>
         </div>
@@ -124,10 +127,10 @@ export default function AboutPage() {
       <section className="py-16 bg-ghana-gold">
         <div className="max-w-content mx-auto px-4 lg:px-8 text-center">
           <h2 className="font-display font-bold text-ink text-2xl sm:text-3xl mb-4">
-            Join the movement.
+            This is our platform. This is our country. Let&apos;s build it together.
           </h2>
-          <p className="text-ink/65 text-lg max-w-lg mx-auto mb-8">
-            Whether you&apos;re a landlord looking for serious tenants or a tenant tired of paying viewing fees — Find Direct Ghana is built for you.
+          <p className="text-ink/70 text-lg max-w-xl mx-auto mb-8">
+            Whether you are a landlord who wants tenants you can trust, or a tenant who is tired of being charged just to see a door — Find Direct Ghana was made for you. No agents. No fees. No nonsense. Just Ghanaians helping Ghanaians.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link href="/listings" className="flex items-center gap-2 bg-ink text-white font-bold px-8 py-4 rounded-btn hover:bg-ghana-green-dark transition-colors">

@@ -44,6 +44,21 @@ export default function ListPage() {
     agreeVerify: false,
   })
 
+  const [cardFront,  setCardFront]  = useState<string>('')
+  const [cardBack,   setCardBack]   = useState<string>('')
+  const [selfie,     setSelfie]     = useState<string>('')
+
+  function handleImageUpload(
+    e: React.ChangeEvent<HTMLInputElement>,
+    setter: (v: string) => void,
+  ) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = ev => setter(ev.target?.result as string)
+    reader.readAsDataURL(file)
+  }
+
   function set(key: string, value: unknown) {
     setForm(f => ({ ...f, [key]: value }))
   }
@@ -356,15 +371,98 @@ export default function ListPage() {
                     <p className="text-muted text-xs mt-1.5">We will send a verification code to this number. This is the number tenants will use to contact you.</p>
                   </div>
 
-                  {/* Verification info */}
-                  <div className="space-y-3">
-                    <div className="bg-white border border-border-col rounded-card p-4">
-                      <div className="flex items-start gap-3">
-                        <Shield className="w-5 h-5 text-ghana-green flex-shrink-0 mt-0.5" />
-                        <div>
-                          <p className="font-semibold text-ink text-sm">Ghana Card Verification (Recommended)</p>
-                          <p className="text-muted text-xs mt-1">Verified owners receive a <span className="text-ghana-green font-semibold">Verified Owner badge</span> which increases inquiries by up to 80%. You can submit your Ghana Card after your listing is reviewed.</p>
-                        </div>
+                  {/* Ghana Card Verification */}
+                  <div className="border border-border-col rounded-card overflow-hidden">
+                    <div className="bg-ghana-green-50 border-b border-ghana-green-100 px-4 py-3 flex items-center gap-2">
+                      <Shield className="w-4 h-4 text-ghana-green flex-shrink-0" />
+                      <p className="font-semibold text-ghana-green text-sm">Ghana Card Verification <span className="text-ghana-green/60 font-normal">(Recommended)</span></p>
+                    </div>
+                    <div className="p-4 space-y-4">
+                      <p className="text-muted text-xs leading-relaxed">
+                        Verified owners get a <strong className="text-ghana-green">Verified Owner badge</strong> and receive up to 80% more inquiries. Upload your Ghana Card (front + back) and a selfie. Your data is encrypted and never shared publicly.
+                      </p>
+
+                      {/* Card Front */}
+                      <div>
+                        <p className="text-sm font-medium text-ink mb-2">Ghana Card — Front</p>
+                        <label className={`flex flex-col items-center justify-center border-2 border-dashed rounded-btn cursor-pointer transition-colors overflow-hidden ${cardFront ? 'border-ghana-green' : 'border-border-col hover:border-ghana-green/50'}`}>
+                          {cardFront ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src={cardFront} alt="Card front" className="w-full h-32 object-cover" />
+                          ) : (
+                            <div className="py-5 flex flex-col items-center gap-2">
+                              <Upload className="w-6 h-6 text-muted" />
+                              <p className="text-sm text-muted">Tap to take photo or upload</p>
+                              <p className="text-xs text-muted/60">Front side of your Ghana Card</p>
+                            </div>
+                          )}
+                          <input
+                            type="file"
+                            accept="image/*"
+                            capture="environment"
+                            className="hidden"
+                            onChange={e => handleImageUpload(e, setCardFront)}
+                          />
+                        </label>
+                      </div>
+
+                      {/* Card Back */}
+                      <div>
+                        <p className="text-sm font-medium text-ink mb-2">Ghana Card — Back</p>
+                        <label className={`flex flex-col items-center justify-center border-2 border-dashed rounded-btn cursor-pointer transition-colors overflow-hidden ${cardBack ? 'border-ghana-green' : 'border-border-col hover:border-ghana-green/50'}`}>
+                          {cardBack ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src={cardBack} alt="Card back" className="w-full h-32 object-cover" />
+                          ) : (
+                            <div className="py-5 flex flex-col items-center gap-2">
+                              <Upload className="w-6 h-6 text-muted" />
+                              <p className="text-sm text-muted">Tap to take photo or upload</p>
+                              <p className="text-xs text-muted/60">Back side of your Ghana Card</p>
+                            </div>
+                          )}
+                          <input
+                            type="file"
+                            accept="image/*"
+                            capture="environment"
+                            className="hidden"
+                            onChange={e => handleImageUpload(e, setCardBack)}
+                          />
+                        </label>
+                      </div>
+
+                      {/* Selfie */}
+                      <div>
+                        <p className="text-sm font-medium text-ink mb-2">Selfie with your Ghana Card</p>
+                        <label className={`flex flex-col items-center justify-center border-2 border-dashed rounded-btn cursor-pointer transition-colors overflow-hidden ${selfie ? 'border-ghana-green' : 'border-border-col hover:border-ghana-green/50'}`}>
+                          {selfie ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src={selfie} alt="Selfie" className="w-full h-36 object-cover" />
+                          ) : (
+                            <div className="py-5 flex flex-col items-center gap-2">
+                              <Upload className="w-6 h-6 text-muted" />
+                              <p className="text-sm text-muted">Take a selfie holding your card</p>
+                              <p className="text-xs text-muted/60 text-center px-4">Hold your Ghana Card next to your face. Look straight at the camera.</p>
+                            </div>
+                          )}
+                          <input
+                            type="file"
+                            accept="image/*"
+                            capture="user"
+                            className="hidden"
+                            onChange={e => handleImageUpload(e, setSelfie)}
+                          />
+                        </label>
+                        {selfie && (
+                          <p className="text-ghana-green text-xs mt-1.5 flex items-center gap-1">
+                            <CheckCircle className="w-3 h-3" /> Selfie uploaded — we will review within 24 hours
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="bg-ghana-gold/10 border border-ghana-gold/25 rounded-btn p-3">
+                        <p className="text-xs text-ink/70 leading-relaxed">
+                          <strong className="text-ink">Privacy:</strong> Your Ghana Card details are encrypted, stored securely, and never displayed publicly. They are only used to confirm your identity as a real property owner.
+                        </p>
                       </div>
                     </div>
                   </div>

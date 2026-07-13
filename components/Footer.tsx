@@ -70,7 +70,7 @@ export default function Footer() {
             © 2026 Find Direct Ghana. All rights reserved.
           </p>
           <p className="text-xs text-white/20">
-            Inspired by Sahibinden.com — built for Ghana.
+            Built for Ghanaians, by Ghanaians.
           </p>
         </div>
       </div>

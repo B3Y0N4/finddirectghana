@@ -4,6 +4,9 @@ import {
   Search, MessageCircle, Home, CheckCircle, Shield, Camera,
   MapPin, Phone, Star, Users, ArrowRight, AlertTriangle,
 } from 'lucide-react'
+import { properties } from '@/lib/properties'
+
+const availableCount = properties.filter(p => p.status === 'available').length
 
 export const metadata: Metadata = {
   title: 'How It Works — Find Direct Ghana',
@@ -160,7 +163,7 @@ export default function HowItWorksPage() {
       <section className="py-16 bg-ghana-green-dark text-white">
         <div className="max-w-content mx-auto px-4 lg:px-8 text-center">
           <h2 className="font-display font-bold text-2xl sm:text-3xl mb-4">Ready to find your next home?</h2>
-          <p className="text-white/60 mb-8">Browse 100+ verified listings in Accra and beyond. No agents. No fees. No commission.</p>
+          <p className="text-white/60 mb-8">Browse {availableCount} verified listings in Accra and beyond. No agents. No fees. No commission.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link href="/listings" className="flex items-center gap-2 bg-ghana-gold text-ink font-bold px-8 py-4 rounded-btn hover:bg-ghana-gold-light transition-colors">
               Browse Properties <ArrowRight className="w-4 h-4" />
