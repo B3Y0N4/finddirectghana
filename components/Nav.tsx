@@ -7,9 +7,10 @@ import { Menu, X, Plus } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const links = [
-  { href: '/listings',      label: 'Browse Properties' },
-  { href: '/how-it-works',  label: 'How It Works'      },
-  { href: '/about',         label: 'About'             },
+  { href: '/listings',     label: 'Browse Properties' },
+  { href: '/blog',         label: 'Blog'              },
+  { href: '/how-it-works', label: 'How It Works'      },
+  { href: '/about',        label: 'About'             },
 ]
 
 export default function Nav() {

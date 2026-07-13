@@ -33,6 +33,7 @@ export default function Footer() {
               {[
                 ['Browse Properties', '/listings'],
                 ['List a Property',   '/list'],
+                ['Blog',              '/blog'],
                 ['How It Works',      '/how-it-works'],
                 ['About Us',          '/about'],
               ].map(([label, href]) => (
