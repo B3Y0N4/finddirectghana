@@ -398,6 +398,87 @@ export const posts: BlogPost[] = [
     ],
   },
 
+  /* ─────────────────────────────────────────────────────────── */
+  {
+    slug:          'landlord-deposit-abuse-ghana',
+    title:         'The Security Deposit That Never Comes Back: How Some Landlords in Ghana Treat Tenants Who Are Leaving',
+    excerpt:       'You kept the property clean for two years. You fixed things at your own cost. You gave proper notice. And when you left, the landlord invented damage that never happened to keep your deposit. This is a story that plays out across Accra every week — and here is what you can do about it.',
+    category:      'Tenant Rights',
+    categoryColor: 'red',
+    readTime:      7,
+    publishedAt:   '2026-07-06',
+    featured:      false,
+    body: [
+      { type: 'p', text: 'Abena was meticulous. Before she moved out of her two-bedroom apartment in Haatso after eighteen months, she cleaned every surface, patched a small nail hole in the wall, touched up the paint near the window herself. She photographed every room before she returned the keys. She gave six weeks\' notice instead of the required four. She left the property in better condition than she found it.' },
+
+      { type: 'p', text: 'The landlord returned GHS 0 of her GHS 2,000 security deposit. He cited "repainting the entire apartment," "damaged ceiling tiles" — there were no damaged ceiling tiles — and "professional cleaning." All of this cost, in his accounting, exactly GHS 2,000.' },
+
+      { type: 'p', text: 'Abena had no written inventory from move-in day. She had no contract clause specifying what constitutes fair wear and tear versus damage. She had no leverage. She had nothing except photographs that the landlord refused to acknowledge and a legal system that would cost more than GHS 2,000 to navigate.' },
+
+      { type: 'p', text: 'She lost the deposit.' },
+
+      { type: 'h2', text: 'Why This Happens — and Why It Keeps Happening' },
+
+      { type: 'p', text: 'Deposit abuse in Ghana is not rare. It is a structural problem born from the same source as advance rent abuse: the absence of a functioning, affordable mechanism for tenants to enforce their rights. When taking a landlord to court costs more than the deposit, when tribunal processes are slow and inaccessible, when most tenants have no written contract that clearly defines their rights at exit — the landlord who decides to keep the deposit faces essentially zero consequences.' },
+
+      { type: 'p', text: 'This creates a perverse incentive. Some landlords treat the security deposit not as protection against genuine damage but as a supplementary income stream, collected routinely at the end of every tenancy regardless of the property\'s condition. The "damage" exists because the landlord needs it to.' },
+
+      { type: 'callout', variant: 'red', text: 'Security deposit abuse is one of the most underreported housing issues in Ghana. Most tenants do not report it because they believe nothing will be done — and historically, they have often been right. That needs to change.' },
+
+      { type: 'h2', text: 'The Construction-While-You-Live-There Problem' },
+
+      { type: 'p', text: 'A related issue that receives even less attention: landlords who conduct major construction or renovation work on the property or the shared compound while tenants are in residence. You signed a lease for a quiet compound in Achimota. Six months in, the landlord decides to add a second floor above your unit. For four months, you live with drilling at 7am, concrete dust in every room, and workers moving through shared spaces at all hours.' },
+
+      { type: 'p', text: 'In formal rental markets, this is addressed clearly in tenancy agreements — prior notice required, compensation for disruption, right to terminate without penalty if the disruption exceeds a certain level. In most Ghanaian compound rentals, there is no such clause. The tenant has no formal recourse. They endure, or they leave and absorb the cost of finding a new place.' },
+
+      { type: 'h2', text: 'Repairs That Are Never Made' },
+
+      { type: 'p', text: 'A functioning tenancy relationship has a clear division: the landlord maintains the structure and major systems (roof, plumbing, electrical main), and the tenant maintains day-to-day cleanliness and minor upkeep. This is the standard across virtually every formal rental market in the world.' },
+
+      { type: 'p', text: 'In practice, in Ghana, many landlords take the position that once rent is paid, the property is the tenant\'s problem. A leaking roof reported in September is still leaking in December. A broken gate motor that creates a security risk goes unfixed for months. A water pump failure that leaves the compound without supply for two weeks gets a vague promise of attention that never materialises.' },
+
+      { type: 'p', text: 'The asymmetry is striking: the same landlord who is unmovable on the advance rent requirement and who keeps the security deposit at exit has no equivalent urgency about their own obligations to the property they are renting out.' },
+
+      { type: 'stat', stats: [
+        { value: '60%+',      label: 'Ghanaian tenants who report repairs going unaddressed' },
+        { value: 'GHS 2,000', label: 'Average deposit lost to false damage claims' },
+        { value: '0',         label: 'Formal complaint channels that are easily accessible to tenants' },
+      ]},
+
+      { type: 'h2', text: 'What You Can Do Before You Sign' },
+
+      { type: 'p', text: 'Most deposit abuse is easiest to prevent before the tenancy begins. By the time you are trying to recover a deposit on your way out, your options are limited. Your leverage is at the start.' },
+
+      { type: 'list', items: [
+        'Photograph everything before you move a single item in. Every wall. Every floor. Every fitting. Every room. Date-stamp the photos. Send them to yourself via email so there is a timestamped record.',
+        'Ask for a written move-in inventory signed by both parties. If the landlord refuses to sign an inventory, that itself tells you something important.',
+        'Include a deposit return clause in any written agreement: the landlord must return the deposit within 14 days of your departure, minus documented damage with receipts.',
+        'Ask about planned construction or renovation before signing. Ask when the last major repair was done on the roof, the plumbing, and the electrical system.',
+        'Talk to existing tenants in the compound before you commit. They will tell you the truth that the landlord will not.',
+      ]},
+
+      { type: 'h2', text: 'What You Can Do When You Leave' },
+
+      { type: 'list', items: [
+        'Photograph and video record the property on your last day. Walk through every room with a witness.',
+        'Do a joint inspection with the landlord before handing over the keys, and ask for a written statement of the property\'s condition at exit.',
+        'If damage is claimed, ask for receipts. A landlord cannot legitimately charge you GHS 3,000 for repainting without producing a receipt from a painter.',
+        'Know that fair wear and tear — slight fading, minor scuff marks, small nail holes from hanging pictures — is not damage. You are not responsible for the natural aging of a property.',
+        'Leave a public review on Find Direct Ghana. The review system exists precisely for this: other tenants deserve to know before they commit.',
+      ]},
+
+      { type: 'h2', text: 'Why Public Reviews Change Everything' },
+
+      { type: 'p', text: 'The single most powerful tool against deposit abuse is public accountability. A landlord who knows that their behaviour after tenancy ends will be visible to the next ten people who consider renting from them has a direct financial incentive to behave fairly.' },
+
+      { type: 'p', text: 'Find Direct Ghana is building a review system where tenants can publicly rate landlords — deposit return, repair responsiveness, construction disruption, communication quality. Landlords who treat tenants fairly build a public record that attracts better tenants. Landlords who abuse deposits build a different kind of record.' },
+
+      { type: 'p', text: 'Landlords can also review tenants — this is fair and important. A tenant who damaged property, paid late consistently, or caused problems for other compound residents deserves to have that on the record too. The system works in both directions, which is exactly what makes it trustworthy.' },
+
+      { type: 'callout', variant: 'green', text: 'On Find Direct Ghana, every landlord will carry a visible review history. Before you sign, you will know what the last three tenants thought. That is the transparency this market has always needed.' },
+    ],
+  },
+
 ]
 
 export function getPost(slug: string): BlogPost | undefined {

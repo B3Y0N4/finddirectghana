@@ -8,8 +8,10 @@ import {
 } from 'lucide-react'
 import PropertyCard from '@/components/PropertyCard'
 import PropertyContactBar from '@/components/PropertyContactBar'
+import LandlordReviews from '@/components/LandlordReviews'
 import { properties } from '@/lib/properties'
 import { formatPrice, propertyTypeLabel, bedroomLabel, waLink } from '@/lib/utils'
+import { getReviewsForLandlord, getLandlordRating } from '@/lib/reviews'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -38,7 +40,10 @@ export default async function PropertyPage({ params }: Props) {
     .filter(q => q.slug !== p.slug && q.neighborhood === p.neighborhood && q.status === 'available')
     .slice(0, 3)
 
-  const isRented = p.status === 'rented'
+  const isRented    = p.status === 'rented'
+  const landlordSlug = `landlord-${p.owner.name.toLowerCase().replace(/\s+/g, '-')}`
+  const ownerReviews = getReviewsForLandlord(landlordSlug)
+  const ownerRating  = getLandlordRating(landlordSlug)
 
   return (
     <div className="pt-nav pb-20 lg:pb-0">
@@ -304,6 +309,15 @@ export default async function PropertyPage({ params }: Props) {
           title={p.title}
           price={p.price_ghs}
           isRented={isRented}
+        />
+
+        {/* Landlord reviews */}
+        <LandlordReviews
+          landlordName={p.owner.name}
+          landlordSlug={landlordSlug}
+          reviews={ownerReviews}
+          average={ownerRating.average}
+          count={ownerRating.count}
         />
 
         {/* Related listings */}
