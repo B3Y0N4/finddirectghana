@@ -44,19 +44,40 @@ export default function ListPage() {
     agreeVerify: false,
   })
 
-  const [cardFront,  setCardFront]  = useState<string>('')
-  const [cardBack,   setCardBack]   = useState<string>('')
-  const [selfie,     setSelfie]     = useState<string>('')
+  const [cardFront,     setCardFront]     = useState<string>('')
+  const [cardBack,      setCardBack]      = useState<string>('')
+  const [selfie,        setSelfie]        = useState<string>('')
+  const [cardFrontFile, setCardFrontFile] = useState<File | null>(null)
+  const [cardBackFile,  setCardBackFile]  = useState<File | null>(null)
+  const [selfieFile,    setSelfieFile]    = useState<File | null>(null)
+  const [photoFiles,    setPhotoFiles]    = useState<File[]>([])
+  const [photoPreviews, setPhotoPreviews] = useState<string[]>([])
+  const [videoUrl,      setVideoUrl]      = useState('')
+  const [submitting,    setSubmitting]    = useState(false)
+  const [submitError,   setSubmitError]   = useState('')
 
   function handleImageUpload(
     e: React.ChangeEvent<HTMLInputElement>,
-    setter: (v: string) => void,
+    setPreview: (v: string) => void,
+    setFile: (f: File | null) => void,
   ) {
     const file = e.target.files?.[0]
     if (!file) return
+    setFile(file)
     const reader = new FileReader()
-    reader.onload = ev => setter(ev.target?.result as string)
+    reader.onload = ev => setPreview(ev.target?.result as string)
     reader.readAsDataURL(file)
+  }
+
+  function handlePhotos(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files ?? [])
+    if (!files.length) return
+    setPhotoFiles(prev => [...prev, ...files])
+    files.forEach(file => {
+      const reader = new FileReader()
+      reader.onload = ev => setPhotoPreviews(prev => [...prev, ev.target?.result as string])
+      reader.readAsDataURL(file)
+    })
   }
 
   function set(key: string, value: unknown) {
@@ -72,9 +93,43 @@ export default function ListPage() {
     }))
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    setSubmitted(true)
+    setSubmitting(true)
+    setSubmitError('')
+    try {
+      const fd = new FormData()
+      fd.append('type',            form.type)
+      fd.append('title',           form.title)
+      fd.append('description',     form.description)
+      fd.append('bedrooms',        form.bedrooms)
+      fd.append('bathrooms',       form.bathrooms)
+      fd.append('furnished',       String(form.furnished))
+      fd.append('features',        JSON.stringify(form.selectedFeatures))
+      fd.append('neighborhood',    form.neighborhood)
+      fd.append('address',         form.address)
+      fd.append('price',           form.price)
+      fd.append('advanceMonths',   form.advanceMonths)
+      fd.append('priceNegotiable', String(form.priceNegotiable))
+      fd.append('name',            form.name)
+      fd.append('phone',           form.phone)
+      fd.append('videoUrl',        videoUrl)
+      photoFiles.forEach((f, i) => fd.append(`photo_${i}`, f))
+      if (cardFrontFile) fd.append('cardFront', cardFrontFile)
+      if (cardBackFile)  fd.append('cardBack',  cardBackFile)
+      if (selfieFile)    fd.append('selfie',    selfieFile)
+
+      const res = await fetch('/api/listings', { method: 'POST', body: fd })
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        throw new Error(err.error ?? 'Submission failed')
+      }
+      setSubmitted(true)
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   const inputClass = 'w-full px-4 py-3 border border-border-col rounded-btn text-sm text-ink focus:outline-none focus:border-ghana-green focus:ring-1 focus:ring-ghana-green bg-white'
@@ -311,18 +366,30 @@ export default function ListPage() {
                 <h2 className="font-display font-semibold text-ink text-lg mb-2">Photos & Video</h2>
                 <p className="text-muted text-sm mb-5">High-quality photos get 3× more inquiries. Include all rooms, exterior, and compound.</p>
                 <div className="space-y-4">
-                  <div className="border-2 border-dashed border-border-col rounded-card p-8 text-center hover:border-ghana-green transition-colors cursor-pointer">
+                  <label className="block border-2 border-dashed border-border-col rounded-card p-8 text-center hover:border-ghana-green transition-colors cursor-pointer">
                     <Upload className="w-8 h-8 text-muted mx-auto mb-3" />
-                    <p className="text-ink font-medium text-sm mb-1">Tap to upload photos</p>
-                    <p className="text-muted text-xs">Upload 5–20 original photos (JPEG, PNG · max 10MB each)</p>
-                    <p className="text-muted text-xs mt-1">Photos must be your own — no stock photos or watermarked images</p>
-                  </div>
+                    <p className="text-ink font-medium text-sm mb-1">
+                      {photoFiles.length > 0 ? `${photoFiles.length} photo${photoFiles.length > 1 ? 's' : ''} selected — tap to add more` : 'Tap to upload photos'}
+                    </p>
+                    <p className="text-muted text-xs">5–20 original photos (JPEG, PNG · max 10MB each)</p>
+                    <input type="file" accept="image/*" multiple className="hidden" onChange={handlePhotos} />
+                  </label>
+                  {photoPreviews.length > 0 && (
+                    <div className="flex gap-2 overflow-x-auto pb-1">
+                      {photoPreviews.map((src, i) => (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img key={i} src={src} alt={`Photo ${i+1}`} className="h-20 w-28 object-cover rounded-lg flex-shrink-0 border border-border-col" />
+                      ))}
+                    </div>
+                  )}
                   <div>
                     <label className={labelClass}>Video walkthrough (optional)</label>
                     <input
                       type="url"
                       className={inputClass}
                       placeholder="YouTube, TikTok, or WhatsApp video link"
+                      value={videoUrl}
+                      onChange={e => setVideoUrl(e.target.value)}
                     />
                     <p className="text-muted text-xs mt-1">A video walkthrough increases your inquiry rate by up to 60%</p>
                   </div>
@@ -401,7 +468,7 @@ export default function ListPage() {
                             accept="image/*"
                             capture="environment"
                             className="hidden"
-                            onChange={e => handleImageUpload(e, setCardFront)}
+                            onChange={e => handleImageUpload(e, setCardFront, setCardFrontFile)}
                           />
                         </label>
                       </div>
@@ -425,7 +492,7 @@ export default function ListPage() {
                             accept="image/*"
                             capture="environment"
                             className="hidden"
-                            onChange={e => handleImageUpload(e, setCardBack)}
+                            onChange={e => handleImageUpload(e, setCardBack, setCardBackFile)}
                           />
                         </label>
                       </div>
@@ -449,7 +516,7 @@ export default function ListPage() {
                             accept="image/*"
                             capture="user"
                             className="hidden"
-                            onChange={e => handleImageUpload(e, setSelfie)}
+                            onChange={e => handleImageUpload(e, setSelfie, setSelfieFile)}
                           />
                         </label>
                         {selfie && (
@@ -482,6 +549,13 @@ export default function ListPage() {
             )}
           </div>
 
+          {/* Submit error */}
+          {submitError && (
+            <div className="bg-ghana-red/10 border border-ghana-red/20 rounded-card p-3 mb-4">
+              <p className="text-ghana-red text-sm">{submitError}</p>
+            </div>
+          )}
+
           {/* Navigation */}
           <div className="flex items-center justify-between gap-4">
             {step > 1 ? (
@@ -505,11 +579,11 @@ export default function ListPage() {
             ) : (
               <button
                 type="submit"
-                disabled={!form.agreeVerify}
+                disabled={!form.agreeVerify || submitting}
                 className="flex items-center gap-2 bg-ghana-green text-white font-semibold text-sm px-8 py-3 rounded-btn hover:bg-ghana-green-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <CheckCircle className="w-4 h-4" />
-                Submit Listing — Free
+                {submitting ? 'Submitting...' : 'Submit Listing — Free'}
               </button>
             )}
           </div>

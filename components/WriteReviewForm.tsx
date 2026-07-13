@@ -57,9 +57,22 @@ export default function WriteReviewForm({ landlordName, onClose }: Props) {
     )
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    setSubmitted(true)
+    const res = await fetch('/api/reviews', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({
+        landlordSlug: `landlord-${landlordName.toLowerCase().replace(/\s+/g, '-')}`,
+        reviewerType: reviewerType,
+        name,
+        rating,
+        categories,
+        title,
+        body,
+      }),
+    })
+    if (res.ok) setSubmitted(true)
   }
 
   const ratingLabels: Record<ReviewerType, string[]> = {
