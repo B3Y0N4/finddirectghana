@@ -45,12 +45,12 @@ export default function PropertyCard({ property: p, priority = false }: Props) {
         {!isRented && (
           <div className="absolute top-3 left-3">
             {p.verification_level === 'full' ? (
-              <span className="flex items-center gap-1 bg-ghana-green text-white text-[10px] font-bold px-2 py-1 rounded-badge">
+              <span className="flex items-center gap-1 bg-ghana-green text-white text-[10px] font-bold px-2.5 py-1.5 rounded-badge shadow-sm">
                 <CheckCircle className="w-2.5 h-2.5" />
                 Verified Owner
               </span>
             ) : p.verification_level === 'phone' ? (
-              <span className="flex items-center gap-1 bg-white/90 text-ghana-green text-[10px] font-bold px-2 py-1 rounded-badge border border-ghana-green/30">
+              <span className="flex items-center gap-1 bg-white/95 backdrop-blur-sm text-ghana-green text-[10px] font-bold px-2.5 py-1.5 rounded-badge border border-ghana-green/25 shadow-sm">
                 <CheckCircle className="w-2.5 h-2.5" />
                 Phone Verified
               </span>
@@ -61,7 +61,7 @@ export default function PropertyCard({ property: p, priority = false }: Props) {
         {/* Furnished badge */}
         {p.furnished && !isRented && (
           <div className="absolute top-3 right-3">
-            <span className="bg-ghana-gold text-ink text-[10px] font-bold px-2 py-1 rounded-badge">
+            <span className="bg-ghana-gold text-ink text-[10px] font-bold px-2.5 py-1.5 rounded-badge shadow-sm">
               Furnished
             </span>
           </div>
@@ -79,7 +79,7 @@ export default function PropertyCard({ property: p, priority = false }: Props) {
       {/* Details */}
       <div className="p-4">
         <div className="flex items-start justify-between gap-2 mb-2">
-          <span className="text-[10px] font-semibold text-ghana-green tracking-wider uppercase">
+          <span className="text-[10px] font-bold text-ghana-gold tracking-wider uppercase">
             {propertyTypeLabel(p.type)}
           </span>
           <span className="flex items-center gap-1 text-[10px] text-muted">
@@ -117,8 +117,8 @@ export default function PropertyCard({ property: p, priority = false }: Props) {
         {/* Owner row */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full bg-ghana-green-50 border border-ghana-green-100 flex items-center justify-center">
-              <span className="text-ghana-green text-[10px] font-bold">{p.owner.initials}</span>
+            <div className="w-7 h-7 rounded-full bg-ghana-green flex items-center justify-center">
+              <span className="text-white text-[10px] font-bold">{p.owner.initials}</span>
             </div>
             <div>
               <p className="text-[11px] font-medium text-ink">{p.owner.name}</p>

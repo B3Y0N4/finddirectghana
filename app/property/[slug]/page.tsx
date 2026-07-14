@@ -9,21 +9,24 @@ import {
 import PropertyCard from '@/components/PropertyCard'
 import PropertyContactBar from '@/components/PropertyContactBar'
 import LandlordReviews from '@/components/LandlordReviews'
-import { properties } from '@/lib/properties'
+import { getListing, getAllSlugs, getRelated } from '@/lib/data'
 import { formatPrice, propertyTypeLabel, bedroomLabel, waLink } from '@/lib/utils'
 import { getReviewsForLandlord, getLandlordRating } from '@/lib/reviews'
+
+export const revalidate = 60
 
 interface Props {
   params: Promise<{ slug: string }>
 }
 
 export async function generateStaticParams() {
-  return properties.map(p => ({ slug: p.slug }))
+  const slugs = await getAllSlugs()
+  return slugs.map(slug => ({ slug }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const p = properties.find(p => p.slug === slug)
+  const p = await getListing(slug)
   if (!p) return {}
   return {
     title: `${p.title} — ${formatPrice(p.price_ghs)}/mo`,
@@ -33,14 +36,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function PropertyPage({ params }: Props) {
   const { slug } = await params
-  const p = properties.find(p => p.slug === slug)
+  const p = await getListing(slug)
   if (!p) notFound()
 
-  const related = properties
-    .filter(q => q.slug !== p.slug && q.neighborhood === p.neighborhood && q.status === 'available')
-    .slice(0, 3)
+  const [related] = await Promise.all([
+    getRelated(slug, p.neighborhood),
+  ])
 
-  const isRented    = p.status === 'rented'
+  const isRented     = p.status === 'rented'
   const landlordSlug = `landlord-${p.owner.name.toLowerCase().replace(/\s+/g, '-')}`
   const ownerReviews = getReviewsForLandlord(landlordSlug)
   const ownerRating  = getLandlordRating(landlordSlug)
@@ -331,11 +334,6 @@ export default async function PropertyPage({ params }: Props) {
                 <PropertyCard key={r.slug} property={r} />
               ))}
             </div>
-            {related.length === 0 && (
-              <Link href="/listings" className="text-ghana-green font-semibold text-sm hover:underline">
-                Browse all properties →
-              </Link>
-            )}
           </div>
         )}
       </div>

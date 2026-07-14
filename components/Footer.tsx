@@ -3,19 +3,26 @@ import Link from 'next/link'
 export default function Footer() {
   return (
     <footer className="bg-ink text-white">
-      <div className="flag-line" />
+      {/* Kente colour stripe — Red | Gold | Green */}
+      <div className="h-1 flex">
+        <div className="flex-1 bg-ghana-red" />
+        <div className="flex-1 bg-ghana-gold-flag" />
+        <div className="flex-1 bg-ghana-green" />
+      </div>
       <div className="max-w-content mx-auto px-4 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
 
           {/* Brand */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-8 h-8 rounded-full bg-ghana-green flex items-center justify-center">
-                <span className="text-ghana-gold font-display font-bold text-xs">FD</span>
+              <div className="w-9 h-9 rounded-lg bg-ghana-gold-flag flex flex-col items-center justify-center gap-px">
+                <div className="w-6 h-1 rounded-sm bg-ghana-red" />
+                <span className="text-ghana-green-dark text-[8px] font-black">★</span>
+                <div className="w-6 h-1 rounded-sm bg-ghana-green" />
               </div>
               <div className="leading-none">
                 <span className="font-display font-bold text-white text-sm">Find Direct</span>
-                <span className="block text-[10px] font-medium text-ghana-gold tracking-wide">Ghana</span>
+                <span className="block text-[10px] font-bold text-ghana-gold tracking-widest uppercase">Ghana</span>
               </div>
             </div>
             <p className="text-white/50 text-sm leading-relaxed max-w-xs">

@@ -5,8 +5,9 @@ import Link              from 'next/link'
 import PropertyCard      from '@/components/PropertyCard'
 import SearchBar         from '@/components/SearchBar'
 import FilterSidebar     from '@/components/FilterSidebar'
-import { properties }    from '@/lib/properties'
-import type { PropertyType } from '@/lib/types'
+import { getListings }   from '@/lib/data'
+
+export const revalidate = 60
 
 export const metadata: Metadata = {
   title: 'Browse Properties — Owner-Direct Rentals in Accra',
@@ -46,7 +47,7 @@ function parsePriceRange(value: string | undefined): [number, number] | null {
 
 /* ── page ───────────────────────────────────────────────────── */
 export default async function ListingsPage({ searchParams }: Props) {
-  const p = await searchParams
+  const [p, properties] = await Promise.all([searchParams, getListings()])
 
   const query         = p.q            ?? ''
   const neighborhoods = parseMulti(p.neighborhood)

@@ -3,17 +3,19 @@
 @tailwind utilities;
 
 :root {
-  --green:      #006B3F;
-  --green-dark: #004D2C;
-  --green-light:#00894E;
-  --gold:       #FCD116;
-  --gold-dark:  #D9B200;
-  --red:        #CC0001;
-  --ink:        #0C1A12;
-  --muted:      #4A6B5A;
-  --bg:         #F7FAF8;
-  --border:     #C5D9CE;
-  --white:      #FFFFFF;
+  --green:       #006B3F;
+  --green-dark:  #004D2C;
+  --green-light: #00894E;
+  --gold:        #C8920A;   /* rich amber — premium, not flag-yellow */
+  --gold-light:  #F5E0A8;
+  --gold-dark:   #A57808;
+  --gold-flag:   #FCD116;   /* flag stripe only */
+  --red:         #CC0001;
+  --ink:         #12130F;
+  --muted:       #5C6858;
+  --bg:          #F8F6F0;   /* warm cream — feels like quality Ghanaian fabric */
+  --border:      #D5CAB8;   /* earthy warm, not cold greenish-grey */
+  --white:       #FFFFFF;
 }
 
 * { box-sizing: border-box; }
@@ -35,10 +37,10 @@ body {
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Ghana flag accent line */
+/* Ghana flag accent line — Red | Gold | Green (correct flag order) */
 .flag-line {
-  height: 3px;
-  background: linear-gradient(to right, #CC0001 33.33%, #006B3F 33.33%, #006B3F 66.66%, #FCD116 66.66%);
+  height: 4px;
+  background: linear-gradient(to right, #CC0001 33.33%, #FCD116 33.33%, #FCD116 66.66%, #006B3F 66.66%);
 }
 
 /* Verified badge pulse */
