@@ -149,39 +149,95 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── CATEGORY PILLS ───────────────────────────────────────── */}
+      {/* ── CATEGORY GRID — MARKETPLACE STYLE ───────────────────── */}
       <section className="bg-white border-b border-border-col">
-        <div className="max-w-content mx-auto px-4 lg:px-8 py-5">
-          <div className="flex items-center gap-3 mb-3">
+        <div className="max-w-content mx-auto px-4 lg:px-8 py-7">
+          <div className="flex items-center gap-3 mb-5">
+            <h2 className="font-display font-bold text-ink text-base whitespace-nowrap">What are you looking for?</h2>
             <div className="h-px flex-1 bg-border-col" />
-            <p className="text-[10px] font-bold text-muted uppercase tracking-widest">Browse by type</p>
-            <div className="h-px flex-1 bg-border-col" />
+            <Link href="/listings" className="text-ghana-green text-xs font-semibold hover:underline whitespace-nowrap">
+              View all →
+            </Link>
           </div>
-          <div className="flex gap-2 overflow-x-auto no-scrollbar pb-0.5">
+
+          {/* Main 2×2 category grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3">
+            {/* All Properties — filled green */}
             <Link
               href="/listings"
-              className="flex items-center gap-2 px-4 py-2.5 border-2 border-ghana-green bg-ghana-green text-white rounded-btn text-sm font-semibold hover:bg-ghana-green-dark transition-colors whitespace-nowrap"
+              className="group relative bg-ghana-green text-white rounded-card p-5 hover:bg-ghana-green-dark transition-colors overflow-hidden"
             >
-              <Home className="w-3.5 h-3.5" />
-              All Properties
-              <span className="bg-white/20 px-1.5 py-0.5 rounded text-[11px] font-bold">{available.length}</span>
+              <div className="absolute -top-6 -right-6 w-20 h-20 rounded-full bg-white/5 transition-transform duration-300 group-hover:scale-150" />
+              <Home className="w-7 h-7 mb-3 relative z-10" />
+              <p className="font-display font-bold text-base relative z-10 leading-snug">All Properties</p>
+              <p className="text-white/55 text-xs mt-1 relative z-10">{available.length} available</p>
             </Link>
-            {([
-              { type: 'apartment',        label: 'Apartments',    icon: <Building2 className="w-3.5 h-3.5" /> },
-              { type: 'house',            label: 'Houses',        icon: <Home      className="w-3.5 h-3.5" /> },
-              { type: 'chamber_and_hall', label: 'Chamber & Hall',icon: <Layers    className="w-3.5 h-3.5" /> },
-              { type: 'studio',           label: 'Studios',       icon: <Sofa      className="w-3.5 h-3.5" /> },
-            ] as { type: PropertyType; label: string; icon: React.ReactNode }[]).map(({ type, label, icon }) => (
-              <Link
-                key={type}
-                href={`/listings?type=${type}`}
-                className="flex items-center gap-2 px-4 py-2.5 border border-border-col rounded-btn text-sm font-medium text-ink hover:border-ghana-green hover:text-ghana-green transition-colors bg-white whitespace-nowrap"
-              >
-                {icon} {label}
-                <span className="text-muted text-xs">({categoryCounts[type]})</span>
-              </Link>
-            ))}
+
+            {/* Apartments */}
+            <Link
+              href="/listings?type=apartment"
+              className="group relative bg-white border-2 border-border-col hover:border-ghana-gold rounded-card p-5 overflow-hidden transition-all duration-200 hover:shadow-card"
+            >
+              <div className="absolute -bottom-4 -right-4 w-16 h-16 bg-ghana-gold/[0.07] rounded-full transition-transform duration-300 group-hover:scale-150" />
+              <Building2 className="w-7 h-7 text-ghana-gold mb-3" />
+              <p className="font-display font-bold text-ink text-base group-hover:text-ghana-gold transition-colors leading-snug">Apartments</p>
+              <p className="text-muted text-xs mt-1">{categoryCounts.apartment} listings</p>
+            </Link>
+
+            {/* Houses */}
+            <Link
+              href="/listings?type=house"
+              className="group relative bg-white border-2 border-border-col hover:border-ghana-green rounded-card p-5 overflow-hidden transition-all duration-200 hover:shadow-card"
+            >
+              <div className="absolute -bottom-4 -right-4 w-16 h-16 bg-ghana-green/[0.07] rounded-full transition-transform duration-300 group-hover:scale-150" />
+              <Home className="w-7 h-7 text-ghana-green mb-3" />
+              <p className="font-display font-bold text-ink text-base group-hover:text-ghana-green transition-colors leading-snug">Houses</p>
+              <p className="text-muted text-xs mt-1">{categoryCounts.house} listings</p>
+            </Link>
+
+            {/* Studios */}
+            <Link
+              href="/listings?type=studio"
+              className="group relative bg-white border-2 border-border-col hover:border-ghana-red rounded-card p-5 overflow-hidden transition-all duration-200 hover:shadow-card"
+            >
+              <div className="absolute -bottom-4 -right-4 w-16 h-16 bg-ghana-red/[0.06] rounded-full transition-transform duration-300 group-hover:scale-150" />
+              <Sofa className="w-7 h-7 text-ghana-red mb-3" />
+              <p className="font-display font-bold text-ink text-base group-hover:text-ghana-red transition-colors leading-snug">Studios</p>
+              <p className="text-muted text-xs mt-1">{categoryCounts.studio} listings</p>
+            </Link>
           </div>
+
+          {/* Chamber & Hall — wide accent card */}
+          <Link
+            href="/listings?type=chamber_and_hall"
+            className="group flex items-center gap-4 bg-ghana-gold-50 border-2 border-ghana-gold/20 hover:border-ghana-gold rounded-card px-5 py-4 transition-all duration-200 hover:shadow-card"
+          >
+            <div className="w-10 h-10 bg-ghana-gold/15 rounded-btn flex items-center justify-center flex-shrink-0">
+              <Layers className="w-5 h-5 text-ghana-gold-dark" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-display font-semibold text-ink text-sm group-hover:text-ghana-gold-dark transition-colors">Chamber &amp; Hall</p>
+              <p className="text-muted text-xs mt-0.5">{categoryCounts.chamber_and_hall} listings · Affordable family homes across Accra</p>
+            </div>
+            <ArrowRight className="w-4 h-4 text-muted group-hover:text-ghana-gold-dark transition-colors flex-shrink-0" />
+          </Link>
+        </div>
+      </section>
+
+      {/* ── LANDLORD STRIP ───────────────────────────────────────── */}
+      <section className="bg-ghana-green-dark">
+        <div className="flag-line" />
+        <div className="max-w-content mx-auto px-4 lg:px-8 py-5 flex items-center justify-between gap-4 flex-wrap">
+          <div>
+            <p className="text-white font-display font-bold text-base">Are you a landlord?</p>
+            <p className="text-white/50 text-xs mt-0.5">List free · No agents · Direct WhatsApp contact</p>
+          </div>
+          <Link
+            href="/list"
+            className="flex items-center gap-2 bg-ghana-gold-flag text-ghana-green-dark font-bold text-sm px-5 py-2.5 rounded-btn hover:brightness-110 transition-all flex-shrink-0"
+          >
+            List Free →
+          </Link>
         </div>
       </section>
 
@@ -212,8 +268,14 @@ export default async function HomePage() {
                 <Link
                   key={n.name}
                   href={`/listings?neighborhood=${encodeURIComponent(n.name)}`}
-                  className="group bg-white border border-border-col rounded-card p-4 hover:border-ghana-green hover:shadow-card transition-all duration-200"
+                  className="group relative bg-white border border-border-col rounded-card p-4 hover:border-ghana-green hover:shadow-card transition-all duration-200 overflow-hidden"
                 >
+                  {/* Colored left accent bar per tier */}
+                  <div className={`absolute left-0 top-0 bottom-0 w-[3px] rounded-l-card transition-all duration-200 ${
+                    n.tier === 'premium'    ? 'bg-ghana-gold   group-hover:w-1' :
+                    n.tier === 'mid'        ? 'bg-ghana-green  group-hover:w-1' :
+                                             'bg-muted/30      group-hover:w-1'
+                  }`} />
                   <div className="flex items-start justify-between mb-3">
                     <MapPin className="w-4 h-4 text-ghana-gold flex-shrink-0 mt-0.5" />
                     <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-badge ${
