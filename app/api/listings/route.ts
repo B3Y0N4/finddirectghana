@@ -1,5 +1,20 @@
 import { NextResponse } from 'next/server'
+import { cookies } from 'next/headers'
+import { jwtVerify } from 'jose'
 import { createServerClient } from '@/lib/supabase-server'
+
+async function getOwnerId(): Promise<string | null> {
+  try {
+    const store = await cookies()
+    const token = store.get('user_token')?.value
+    if (!token) return null
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET ?? 'dev-secret-change-me')
+    const { payload } = await jwtVerify(token, secret)
+    return (payload.sub as string) ?? null
+  } catch {
+    return null
+  }
+}
 
 function toSlug(title: string): string {
   return (
@@ -30,9 +45,10 @@ async function uploadFile(
 
 export async function POST(req: Request) {
   try {
-    const fd  = await req.formData()
-    const sb  = createServerClient()
-    const ts  = Date.now()
+    const fd      = await req.formData()
+    const sb      = createServerClient()
+    const ts      = Date.now()
+    const ownerId = await getOwnerId()
 
     // Upload property photos
     const photoUrls: string[] = []
@@ -81,6 +97,7 @@ export async function POST(req: Request) {
       price_negotiable:     fd.get('priceNegotiable') === 'true',
       description:          fd.get('description') || null,
       video_url:            fd.get('videoUrl')    || null,
+      owner_id:             ownerId ?? null,
       owner_name:           fd.get('name'),
       owner_phone:          fd.get('phone'),
       image_urls:           photoUrls,

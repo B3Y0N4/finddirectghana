@@ -1,10 +1,26 @@
 import { NextResponse } from 'next/server'
+import { cookies } from 'next/headers'
+import { jwtVerify } from 'jose'
 import { createServerClient } from '@/lib/supabase-server'
+
+async function getReviewerId(): Promise<string | null> {
+  try {
+    const store = await cookies()
+    const token = store.get('user_token')?.value
+    if (!token) return null
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET ?? 'dev-secret-change-me')
+    const { payload } = await jwtVerify(token, secret)
+    return (payload.sub as string) ?? null
+  } catch {
+    return null
+  }
+}
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json()
-    const sb   = createServerClient()
+    const body       = await req.json()
+    const sb         = createServerClient()
+    const reviewerId = await getReviewerId()
 
     const initials = (body.name as string)
       .split(' ')
@@ -15,6 +31,7 @@ export async function POST(req: Request) {
     const { data, error } = await sb.from('reviews').insert({
       landlord_slug:     body.landlordSlug,
       reviewer_type:     body.reviewerType,
+      reviewer_id:       reviewerId ?? null,
       reviewer_name:     body.name,
       reviewer_initials: initials,
       rating:            body.rating,

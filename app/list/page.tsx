@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import {
   Home, MapPin, Camera, Phone, CheckCircle, ChevronRight,
   Upload, DollarSign, Shield, ArrowLeft, Star,
@@ -25,6 +26,7 @@ const features = [
 ]
 
 export default function ListPage() {
+  const router = useRouter()
   const [step, setStep]           = useState(1)
   const [submitted, setSubmitted] = useState(false)
 
@@ -46,6 +48,14 @@ export default function ListPage() {
   const [videoUrl,      setVideoUrl]      = useState('')
   const [submitting,    setSubmitting]    = useState(false)
   const [submitError,   setSubmitError]   = useState('')
+
+  // Pre-fill name from auth session
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then(r => r.ok ? r.json() : null)
+      .then(user => { if (user?.name) set('name', user.name) })
+      .catch(() => {})
+  }, [])
 
   function handleImageUpload(
     e: React.ChangeEvent<HTMLInputElement>,
@@ -88,7 +98,7 @@ export default function ListPage() {
     if (step === 1) return !!(form.type && form.bedrooms && form.bathrooms && form.title)
     if (step === 2) return !!form.neighborhood
     if (step === 3) return !!form.price
-    if (step === 4) return true
+    if (step === 4) return photoFiles.length >= 3 && videoUrl.trim().length > 0
     if (step === 5) return !!(form.name && form.phone && form.agreeVerify)
     return true
   }
@@ -121,6 +131,11 @@ export default function ListPage() {
       if (selfieFile)    fd.append('selfie',    selfieFile)
 
       const res = await fetch('/api/listings', { method: 'POST', body: fd })
+      if (res.status === 401) {
+        setSubmitError('Your session expired — please sign in again.')
+        setTimeout(() => router.push('/auth/login?next=/list'), 1800)
+        return
+      }
       if (!res.ok) {
         const err = await res.json().catch(() => ({}))
         throw new Error(err.error ?? 'Submission failed')
@@ -474,14 +489,21 @@ export default function ListPage() {
                   <p className="text-muted text-xs mt-0.5">Good photos get 3× more inquiries</p>
                 </div>
 
-                <label className="block border-2 border-dashed border-border-col rounded-card p-8 text-center hover:border-ghana-green transition-colors cursor-pointer active:bg-ghana-green-50">
-                  <Upload className="w-8 h-8 text-muted mx-auto mb-2.5" />
+                <label className={cn(
+                  'block border-2 border-dashed rounded-card p-8 text-center cursor-pointer active:bg-ghana-green-50 transition-colors',
+                  photoFiles.length >= 3 ? 'border-ghana-green hover:border-ghana-green' : 'border-border-col hover:border-ghana-green'
+                )}>
+                  <Upload className={cn('w-8 h-8 mx-auto mb-2.5', photoFiles.length >= 3 ? 'text-ghana-green' : 'text-muted')} />
                   <p className="text-ink font-semibold text-sm mb-1">
-                    {photoFiles.length > 0
-                      ? `${photoFiles.length} photo${photoFiles.length > 1 ? 's' : ''} added — tap to add more`
-                      : 'Tap to upload photos'}
+                    {photoFiles.length === 0
+                      ? 'Tap to upload photos'
+                      : photoFiles.length < 3
+                        ? `${photoFiles.length} photo${photoFiles.length > 1 ? 's' : ''} — need ${3 - photoFiles.length} more`
+                        : `${photoFiles.length} photos — tap to add more`}
                   </p>
-                  <p className="text-muted text-xs">5–20 photos · JPEG or PNG</p>
+                  <p className={cn('text-xs', photoFiles.length >= 3 ? 'text-ghana-green font-semibold' : 'text-muted')}>
+                    {photoFiles.length >= 3 ? '✓ Minimum met' : 'At least 3 photos required · JPEG or PNG'}
+                  </p>
                   <input type="file" accept="image/*" multiple className="hidden" onChange={handlePhotos} />
                 </label>
 
@@ -505,15 +527,16 @@ export default function ListPage() {
                 </div>
 
                 <div>
-                  <label className={labelClass}>Video walkthrough <span className="font-normal text-muted">(optional)</span></label>
+                  <label className={labelClass}>Video walkthrough *</label>
                   <input
                     type="url"
                     className={inputClass}
                     placeholder="YouTube, TikTok, or WhatsApp video link"
                     value={videoUrl}
                     onChange={e => setVideoUrl(e.target.value)}
+                    required
                   />
-                  <p className="text-muted text-xs mt-1">A video increases inquiries by up to 60%</p>
+                  <p className="text-muted text-xs mt-1">Required · A video tour increases inquiries by up to 60%</p>
                 </div>
               </div>
             )}

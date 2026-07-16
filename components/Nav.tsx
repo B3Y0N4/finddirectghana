@@ -1,10 +1,12 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
-import { Menu, X, Plus, Home, Building2, Layers, Sofa, MapPin, ArrowRight } from 'lucide-react'
+import { Menu, X, Plus, Home, Building2, Layers, Sofa, MapPin, ArrowRight, LogOut } from 'lucide-react'
 import { cn } from '@/lib/utils'
+
+interface AuthUser { id: string; name: string; email: string; role: string }
 
 const links = [
   { href: '/listings',     label: 'Browse'       },
@@ -29,11 +31,18 @@ const menuAreas = [
   { href: '/listings?neighborhood=Labone',              label: 'Labone'              },
 ]
 
+function initials(name: string) {
+  return name.split(' ').map(w => w[0]?.toUpperCase() ?? '').slice(0, 2).join('')
+}
+
 export default function Nav() {
-  const pathname  = usePathname()
+  const pathname = usePathname()
+  const router   = useRouter()
+
   const [open,    setOpen]    = useState(false)
   const [openKey, setOpenKey] = useState(0)
   const [scrolled, setScrolled] = useState(false)
+  const [user,    setUser]    = useState<AuthUser | null | undefined>(undefined)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50)
@@ -47,6 +56,20 @@ export default function Nav() {
     document.body.style.overflow = open ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
   }, [open])
+
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then(r => r.ok ? r.json() : null)
+      .then(setUser)
+      .catch(() => setUser(null))
+  }, [pathname])
+
+  async function handleLogout() {
+    await fetch('/api/auth/logout', { method: 'DELETE' })
+    setUser(null)
+    router.push('/')
+    router.refresh()
+  }
 
   const isHome = pathname === '/'
   const onHero = isHome && !scrolled
@@ -93,20 +116,63 @@ export default function Nav() {
             ))}
           </nav>
 
-          {/* Desktop CTA */}
+          {/* Desktop CTA / auth */}
           <div className="hidden md:flex items-center gap-3">
-            <Link
-              href="/list"
-              className={cn(
-                'flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-btn transition-colors',
-                onHero
-                  ? 'bg-ghana-gold-flag text-ghana-green-dark hover:bg-yellow-300'
-                  : 'bg-ghana-green text-white hover:bg-ghana-green-dark'
-              )}
-            >
-              <Plus className="w-3.5 h-3.5" />
-              List For Free
-            </Link>
+            {user === undefined ? (
+              /* skeleton while loading */
+              <div className="w-24 h-8 rounded-btn bg-border-col/40 animate-pulse" />
+            ) : user ? (
+              <div className="relative group">
+                <button className={cn(
+                  'flex items-center gap-2 text-sm font-medium transition-colors rounded-btn px-2 py-1.5',
+                  onHero ? 'text-white/90 hover:text-white' : 'text-muted hover:text-ink'
+                )}>
+                  <div className="w-7 h-7 rounded-full bg-ghana-green flex items-center justify-center flex-shrink-0">
+                    <span className="text-white text-[10px] font-bold leading-none">{initials(user.name)}</span>
+                  </div>
+                  <span>{user.name.split(' ')[0]}</span>
+                </button>
+                {/* Hover dropdown */}
+                <div className="absolute right-0 top-full mt-1.5 w-44 bg-white border border-border-col rounded-card shadow-card-hover opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 py-1">
+                  {user.role === 'landlord' && (
+                    <Link href="/list" className="block px-4 py-2.5 text-sm text-ink hover:bg-page-bg transition-colors">
+                      List a Property
+                    </Link>
+                  )}
+                  <div className="border-t border-border-col my-1" />
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-ghana-red hover:bg-ghana-red/5 transition-colors"
+                  >
+                    <LogOut className="w-3.5 h-3.5" /> Sign Out
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <Link
+                  href="/auth/login"
+                  className={cn(
+                    'text-sm font-medium transition-colors',
+                    onHero ? 'text-white/80 hover:text-white' : 'text-muted hover:text-ink'
+                  )}
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/list"
+                  className={cn(
+                    'flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-btn transition-colors',
+                    onHero
+                      ? 'bg-ghana-gold-flag text-ghana-green-dark hover:bg-yellow-300'
+                      : 'bg-ghana-green text-white hover:bg-ghana-green-dark'
+                  )}
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  List For Free
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile hamburger — icon cross-fade */}
@@ -224,23 +290,56 @@ export default function Nav() {
               ))}
             </div>
 
-            {/* CTA buttons — pushed to bottom */}
+            {/* Auth / CTA section — pushed to bottom */}
             <div className="mt-auto space-y-2.5 mega-item" style={{ animationDelay: '580ms' }}>
-              <Link
-                href="/list"
-                onClick={close}
-                className="flex items-center justify-center gap-2 w-full bg-ghana-gold-flag text-ghana-green-dark font-bold text-sm py-4 rounded-btn active:brightness-90 transition-all"
-              >
-                <Plus className="w-4 h-4" />
-                List Your Property — Free
-              </Link>
-              <Link
-                href="/listings"
-                onClick={close}
-                className="flex items-center justify-center gap-2 w-full bg-white/[0.07] border border-white/[0.12] text-white font-medium text-sm py-3.5 rounded-btn hover:bg-white/[0.12] transition-colors"
-              >
-                Browse All Listings
-              </Link>
+              {user ? (
+                <>
+                  {/* User identity bar */}
+                  <div className="flex items-center gap-3 bg-white/[0.07] border border-white/10 rounded-card px-4 py-3.5 mb-1">
+                    <div className="w-9 h-9 rounded-full bg-ghana-green flex items-center justify-center flex-shrink-0">
+                      <span className="text-white font-bold text-xs">{initials(user.name)}</span>
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-white font-semibold text-sm truncate">{user.name}</p>
+                      <p className="text-ghana-gold-flag/70 text-[11px] capitalize">{user.role}</p>
+                    </div>
+                  </div>
+
+                  {user.role === 'landlord' && (
+                    <Link
+                      href="/list"
+                      onClick={close}
+                      className="flex items-center justify-center gap-2 w-full bg-ghana-gold-flag text-ghana-green-dark font-bold text-sm py-4 rounded-btn active:brightness-90 transition-all"
+                    >
+                      <Plus className="w-4 h-4" /> List Your Property
+                    </Link>
+                  )}
+
+                  <button
+                    onClick={() => { handleLogout(); close() }}
+                    className="flex items-center justify-center gap-2 w-full bg-white/[0.07] border border-white/[0.12] text-white font-medium text-sm py-3.5 rounded-btn hover:bg-white/[0.12] transition-colors"
+                  >
+                    <LogOut className="w-4 h-4" /> Sign Out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/auth/login"
+                    onClick={close}
+                    className="flex items-center justify-center gap-2 w-full bg-ghana-gold-flag text-ghana-green-dark font-bold text-sm py-4 rounded-btn active:brightness-90 transition-all"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/auth/signup"
+                    onClick={close}
+                    className="flex items-center justify-center gap-2 w-full bg-white/[0.07] border border-white/[0.12] text-white font-medium text-sm py-3.5 rounded-btn hover:bg-white/[0.12] transition-colors"
+                  >
+                    <Plus className="w-4 h-4" /> Sign Up Free
+                  </Link>
+                </>
+              )}
             </div>
 
             <p className="text-center text-white/15 text-[11px] mt-5 pb-2">

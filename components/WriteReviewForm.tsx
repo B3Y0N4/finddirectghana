@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
-import { Star, CheckCircle, X } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import { Star, CheckCircle, X, Shield } from 'lucide-react'
 import { categoryLabels } from '@/lib/reviews'
 import type { ReviewCategory, ReviewerType } from '@/lib/reviews'
 
@@ -43,13 +44,27 @@ function StarPicker({ value, onChange }: { value: number; onChange: (n: number) 
 const inputClass = 'w-full px-4 py-3 border border-border-col rounded-btn text-sm text-ink focus:outline-none focus:border-ghana-green focus:ring-1 focus:ring-ghana-green bg-white'
 
 export default function WriteReviewForm({ landlordName, onClose }: Props) {
-  const [submitted, setSubmitted] = useState(false)
+  const [authChecked, setAuthChecked] = useState(false)
+  const [authed,      setAuthed]      = useState(false)
+  const [submitted,   setSubmitted]   = useState(false)
+
   const [reviewerType, setReviewerType] = useState<ReviewerType>('tenant')
   const [rating,       setRating]       = useState(0)
   const [categories,   setCategories]   = useState<ReviewCategory[]>([])
   const [name,         setName]         = useState('')
   const [title,        setTitle]        = useState('')
   const [body,         setBody]         = useState('')
+
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then(r => r.ok ? r.json() : null)
+      .then(user => {
+        setAuthed(!!user)
+        if (user?.name) setName(user.name)
+        setAuthChecked(true)
+      })
+      .catch(() => { setAuthed(false); setAuthChecked(true) })
+  }, [])
 
   function toggleCategory(cat: ReviewCategory) {
     setCategories(prev =>
@@ -64,7 +79,7 @@ export default function WriteReviewForm({ landlordName, onClose }: Props) {
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({
         landlordSlug: `landlord-${landlordName.toLowerCase().replace(/\s+/g, '-')}`,
-        reviewerType: reviewerType,
+        reviewerType,
         name,
         rating,
         categories,
@@ -72,12 +87,51 @@ export default function WriteReviewForm({ landlordName, onClose }: Props) {
         body,
       }),
     })
+    if (res.status === 401) {
+      setAuthed(false)
+      return
+    }
     if (res.ok) setSubmitted(true)
   }
 
   const ratingLabels: Record<ReviewerType, string[]> = {
     tenant:   ['', 'Very poor landlord', 'Poor landlord', 'OK landlord', 'Good landlord', 'Excellent landlord'],
     landlord: ['', 'Very difficult tenant', 'Difficult tenant', 'OK tenant', 'Good tenant', 'Excellent tenant'],
+  }
+
+  if (!authChecked) {
+    return <div className="h-32 animate-pulse bg-page-bg rounded-card" />
+  }
+
+  if (!authed) {
+    return (
+      <div className="text-center py-8 px-4">
+        <div className="w-14 h-14 rounded-full bg-ghana-green/10 border border-ghana-green/20 flex items-center justify-center mx-auto mb-4">
+          <Shield className="w-7 h-7 text-ghana-green" />
+        </div>
+        <h3 className="font-display font-bold text-ink text-lg mb-2">Sign in to leave a review</h3>
+        <p className="text-muted text-sm leading-relaxed mb-5 max-w-xs mx-auto">
+          Reviews are from verified users only — this helps keep our community honest and fair.
+        </p>
+        <Link
+          href="/auth/login?next=/landlords"
+          className="inline-flex items-center gap-2 bg-ghana-green text-white font-bold text-sm px-6 py-3 rounded-btn hover:bg-ghana-green-dark transition-colors"
+        >
+          Sign In to Review
+        </Link>
+        <p className="mt-3 text-xs text-muted">
+          No account?{' '}
+          <Link href="/auth/signup" className="text-ghana-green font-semibold hover:underline">
+            Sign up free
+          </Link>
+        </p>
+        {onClose && (
+          <button onClick={onClose} className="mt-4 text-muted font-medium text-xs hover:text-ink transition-colors flex items-center gap-1 mx-auto">
+            <X className="w-3.5 h-3.5" /> Cancel
+          </button>
+        )}
+      </div>
+    )
   }
 
   if (submitted) {
