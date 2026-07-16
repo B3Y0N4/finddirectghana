@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Poppins, Inter } from 'next/font/google'
 import './globals.css'
 import Nav from '@/components/Nav'
+import BottomNav from '@/components/BottomNav'
 import Footer from '@/components/Footer'
 
 const poppins = Poppins({
@@ -54,8 +55,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${poppins.variable} ${inter.variable}`}>
       <body className="font-sans antialiased bg-page-bg text-ink">
         <Nav />
-        <main>{children}</main>
+        <main className="pb-[calc(58px+env(safe-area-inset-bottom))] md:pb-0">
+          {children}
+        </main>
         <Footer />
+        <BottomNav />
       </body>
     </html>
   )
