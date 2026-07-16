@@ -15,14 +15,12 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-9 h-9 rounded-lg bg-ghana-gold-flag flex flex-col items-center justify-center gap-px">
-                <div className="w-6 h-1 rounded-sm bg-ghana-red" />
-                <span className="text-ghana-green-dark text-[8px] font-black">★</span>
-                <div className="w-6 h-1 rounded-sm bg-ghana-green" />
+              <div className="w-9 h-9 rounded-full bg-ghana-green flex items-center justify-center flex-shrink-0">
+                <span className="text-ghana-gold font-display font-bold text-xs leading-none">FD</span>
               </div>
               <div className="leading-none">
                 <span className="font-display font-bold text-white text-sm">Find Direct</span>
-                <span className="block text-[10px] font-bold text-ghana-gold tracking-widest uppercase">Ghana</span>
+                <span className="block text-[10px] font-medium text-ghana-green tracking-wide">Ghana</span>
               </div>
             </div>
             <p className="text-white/50 text-sm leading-relaxed max-w-xs">
