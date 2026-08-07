@@ -1,20 +1,6 @@
 import { NextResponse } from 'next/server'
-import { cookies } from 'next/headers'
-import { jwtVerify } from 'jose'
 import { createServerClient } from '@/lib/supabase-server'
-
-async function getOwnerId(): Promise<string | null> {
-  try {
-    const store = await cookies()
-    const token = store.get('user_token')?.value
-    if (!token) return null
-    const secret = new TextEncoder().encode(process.env.JWT_SECRET ?? 'dev-secret-change-me')
-    const { payload } = await jwtVerify(token, secret)
-    return (payload.sub as string) ?? null
-  } catch {
-    return null
-  }
-}
+import { getSession } from '@/lib/auth'
 
 function toSlug(title: string): string {
   return (
@@ -45,10 +31,18 @@ async function uploadFile(
 
 export async function POST(req: Request) {
   try {
+    const session = await getSession()
+    if (!session) {
+      return NextResponse.json({ error: 'Sign in to continue' }, { status: 401 })
+    }
+    if (session.role !== 'landlord') {
+      return NextResponse.json({ error: 'Only landlord accounts can list a property' }, { status: 403 })
+    }
+
     const fd      = await req.formData()
     const sb      = createServerClient()
     const ts      = Date.now()
-    const ownerId = await getOwnerId()
+    const ownerId = session.sub
 
     // Upload property photos
     const photoUrls: string[] = []

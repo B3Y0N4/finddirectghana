@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase-server'
+import { adminPatchSchema } from '@/lib/validation'
 
 async function withSignedUrls(sb: ReturnType<typeof createServerClient>, listings: Record<string, unknown>[]) {
   return Promise.all(listings.map(async listing => {
@@ -35,7 +36,11 @@ export async function GET(req: Request) {
 }
 
 export async function PATCH(req: Request) {
-  const { id, status, admin_notes } = await req.json()
+  const parsed = adminPatchSchema.safeParse(await req.json())
+  if (!parsed.success) {
+    return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 })
+  }
+  const { id, status, admin_notes } = parsed.data
   const sb = createServerClient()
 
   const { error } = await sb

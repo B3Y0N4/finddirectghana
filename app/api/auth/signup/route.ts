@@ -1,34 +1,26 @@
 import { NextResponse } from 'next/server'
 import { SignJWT } from 'jose'
 import { createServerClient } from '@/lib/supabase-server'
+import { jwtSecret } from '@/lib/jwt-secret'
+import { signupSchema } from '@/lib/validation'
 
 const COOKIE  = 'user_token'
 const MAX_AGE = 60 * 60 * 24 * 30 // 30 days
-
-function secret() {
-  return new TextEncoder().encode(process.env.JWT_SECRET ?? 'dev-secret-change-me')
-}
 
 async function issueToken(sub: string, email: string, role: string, name: string) {
   return new SignJWT({ sub, email, role, name })
     .setProtectedHeader({ alg: 'HS256' })
     .setExpirationTime('30d')
-    .sign(secret())
+    .sign(jwtSecret())
 }
 
 export async function POST(req: Request) {
   try {
-    const { email, password, name, phone, role } = await req.json()
-
-    if (!email || !password || !name || !role) {
-      return NextResponse.json({ error: 'Name, email, password and role are required' }, { status: 400 })
+    const parsed = signupSchema.safeParse(await req.json())
+    if (!parsed.success) {
+      return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 })
     }
-    if (!['tenant', 'landlord'].includes(role)) {
-      return NextResponse.json({ error: 'Invalid role' }, { status: 400 })
-    }
-    if (password.length < 8) {
-      return NextResponse.json({ error: 'Password must be at least 8 characters' }, { status: 400 })
-    }
+    const { email, password, name, phone, role } = parsed.data
 
     const sb = createServerClient()
 

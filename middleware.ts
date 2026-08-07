@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { jwtVerify } from 'jose'
-
-function jwtSecret() {
-  return new TextEncoder().encode(process.env.JWT_SECRET ?? 'dev-secret-change-me')
-}
+import { jwtSecret } from './lib/jwt-secret'
 
 async function verify(token: string) {
   const { payload } = await jwtVerify(token, jwtSecret())

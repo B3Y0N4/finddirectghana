@@ -1,21 +1,19 @@
 import { NextResponse } from 'next/server'
 import { SignJWT } from 'jose'
 import { createServerClient, createAuthClient } from '@/lib/supabase-server'
+import { jwtSecret } from '@/lib/jwt-secret'
+import { loginSchema } from '@/lib/validation'
 
 const COOKIE  = 'user_token'
 const MAX_AGE = 60 * 60 * 24 * 30
 
-function secret() {
-  return new TextEncoder().encode(process.env.JWT_SECRET ?? 'dev-secret-change-me')
-}
-
 export async function POST(req: Request) {
   try {
-    const { email, password } = await req.json()
-
-    if (!email || !password) {
-      return NextResponse.json({ error: 'Email and password are required' }, { status: 400 })
+    const parsed = loginSchema.safeParse(await req.json())
+    if (!parsed.success) {
+      return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 })
     }
+    const { email, password } = parsed.data
 
     const auth = createAuthClient()
     const { data, error } = await auth.auth.signInWithPassword({ email, password })
@@ -37,7 +35,7 @@ export async function POST(req: Request) {
     const token = await new SignJWT({ sub: data.user.id, email, role, name })
       .setProtectedHeader({ alg: 'HS256' })
       .setExpirationTime('30d')
-      .sign(secret())
+      .sign(jwtSecret())
 
     const res = NextResponse.json({ ok: true, role, name })
 

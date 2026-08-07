@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase-server'
+import { adminPatchSchema } from '@/lib/validation'
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
@@ -17,7 +18,11 @@ export async function GET(req: Request) {
 }
 
 export async function PATCH(req: Request) {
-  const { id, status } = await req.json()
+  const parsed = adminPatchSchema.pick({ id: true, status: true }).safeParse(await req.json())
+  if (!parsed.success) {
+    return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 })
+  }
+  const { id, status } = parsed.data
   const sb = createServerClient()
 
   const { error } = await sb.from('reviews').update({ status }).eq('id', id)
