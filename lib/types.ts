@@ -13,6 +13,24 @@ export interface Owner {
   response_rate: number
 }
 
+// Raw moderation status as stored in the DB — broader than the public-facing
+// PropertyStatus, since it includes pre-approval states a landlord needs to
+// see but a tenant never should.
+export type ListingRawStatus = 'pending' | 'approved' | 'rejected' | 'rented' | 'paused'
+
+export interface OwnerListing {
+  id: string
+  slug: string
+  title: string
+  status: ListingRawStatus
+  price_ghs: number
+  neighborhood: string
+  image_url: string | null
+  admin_notes: string | null
+  verification_level: VerificationLevel
+  created_at: string
+}
+
 export interface Property {
   slug: string
   title: string

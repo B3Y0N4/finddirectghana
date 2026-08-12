@@ -20,14 +20,39 @@ const labelClass = 'block text-sm font-medium text-ink mb-1.5'
 export default function ReportPage() {
   const [form, setForm] = useState({ url: '', issueType: '', description: '', phone: '' })
   const [submitted, setSubmitted] = useState(false)
+  const [loading,   setLoading]   = useState(false)
+  const [error,     setError]     = useState('')
 
   function set(key: string, value: string) {
     setForm(f => ({ ...f, [key]: value }))
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    setSubmitted(true)
+    setLoading(true)
+    setError('')
+    try {
+      const res = await fetch('/api/reports', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({
+          url:         form.url,
+          issueType:   form.issueType,
+          description: form.description,
+          phone:       form.phone || undefined,
+        }),
+      })
+      const json = await res.json()
+      if (res.ok) {
+        setSubmitted(true)
+      } else {
+        setError(json.error ?? 'Something went wrong — please try again')
+      }
+    } catch {
+      setError('Network error — please try again')
+    } finally {
+      setLoading(false)
+    }
   }
 
   if (submitted) {
@@ -153,13 +178,17 @@ export default function ReportPage() {
             <p className="text-muted text-xs mt-1.5">We may contact you if we need more details. Kept confidential.</p>
           </div>
 
+          {error && (
+            <p className="text-ghana-red text-sm">{error}</p>
+          )}
+
           <button
             type="submit"
-            disabled={!form.url || !form.issueType || !form.description}
+            disabled={!form.url || !form.issueType || !form.description || loading}
             className="w-full flex items-center justify-center gap-2 bg-ghana-red text-white font-bold text-sm py-3.5 rounded-btn hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <Flag className="w-4 h-4" />
-            Submit Report
+            {loading ? 'Submitting…' : 'Submit Report'}
           </button>
         </form>
 

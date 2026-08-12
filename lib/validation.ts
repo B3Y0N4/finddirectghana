@@ -29,3 +29,14 @@ export const adminPatchSchema = z.object({
   status:      z.enum(['pending', 'approved', 'rejected']),
   admin_notes: z.string().optional(),
 })
+
+export const landlordListingPatchSchema = z.object({
+  status: z.enum(['approved', 'rented', 'paused']),
+})
+
+export const reportSchema = z.object({
+  url:         z.string().trim().optional(),
+  issueType:   z.enum(['fake', 'fraud', 'wrong_price', 'unresponsive', 'wrong_photos', 'already_rented', 'other']),
+  description: z.string().trim().min(10, 'Please provide a bit more detail'),
+  phone:       z.string().trim().optional(),
+})

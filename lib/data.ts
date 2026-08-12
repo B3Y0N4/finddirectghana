@@ -2,7 +2,7 @@
  * Central data access layer.
  * Reads from Supabase when env vars are present, falls back to static seed data.
  */
-import type { Property, PropertyType, VerificationLevel } from './types'
+import type { OwnerListing, Property, PropertyType, VerificationLevel } from './types'
 import { properties as staticProperties } from './properties'
 
 const hasSupabase =
@@ -91,7 +91,7 @@ export async function getListing(slug: string): Promise<Property | null> {
     .from('listings')
     .select('*')
     .eq('slug', slug)
-    .eq('status', 'approved')
+    .in('status', ['approved', 'rented']) // rented stays viewable (shows as unavailable); paused does not
     .single()
 
   if (error || !data) return null
@@ -119,4 +119,41 @@ export async function getRelated(slug: string, neighborhood: string, limit = 3):
   return all
     .filter(p => p.slug !== slug && p.neighborhood === neighborhood && p.status === 'available')
     .slice(0, limit)
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function rowToOwnerListing(row: Record<string, any>): OwnerListing {
+  return {
+    id:                  row.id,
+    slug:                row.slug,
+    title:               row.title,
+    status:              row.status,
+    price_ghs:           Number(row.price_ghs),
+    neighborhood:        row.neighborhood,
+    image_url:           (row.image_urls ?? [])[0] ?? null,
+    admin_notes:         row.admin_notes ?? null,
+    verification_level:  row.verification_level ?? 'none',
+    created_at:          row.created_at,
+  }
+}
+
+/** All listings (any status) owned by a given user — for the landlord dashboard. */
+export async function getListingsForOwner(ownerId: string): Promise<OwnerListing[]> {
+  if (!hasSupabase) return []
+
+  const { createServerClient } = await import('./supabase-server')
+  const sb = createServerClient()
+
+  const { data, error } = await sb
+    .from('listings')
+    .select('*')
+    .eq('owner_id', ownerId)
+    .order('created_at', { ascending: false })
+
+  if (error) {
+    console.error('[data] getListingsForOwner:', error.message)
+    return []
+  }
+
+  return (data ?? []).map(rowToOwnerListing)
 }

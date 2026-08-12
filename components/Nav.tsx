@@ -135,9 +135,14 @@ export default function Nav() {
                 {/* Hover dropdown */}
                 <div className="absolute right-0 top-full mt-1.5 w-44 bg-white border border-border-col rounded-card shadow-card-hover opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 py-1">
                   {user.role === 'landlord' && (
-                    <Link href="/list" className="block px-4 py-2.5 text-sm text-ink hover:bg-page-bg transition-colors">
-                      List a Property
-                    </Link>
+                    <>
+                      <Link href="/dashboard" className="block px-4 py-2.5 text-sm text-ink hover:bg-page-bg transition-colors">
+                        My Listings
+                      </Link>
+                      <Link href="/list" className="block px-4 py-2.5 text-sm text-ink hover:bg-page-bg transition-colors">
+                        List a Property
+                      </Link>
+                    </>
                   )}
                   <div className="border-t border-border-col my-1" />
                   <button
@@ -306,13 +311,22 @@ export default function Nav() {
                   </div>
 
                   {user.role === 'landlord' && (
-                    <Link
-                      href="/list"
-                      onClick={close}
-                      className="flex items-center justify-center gap-2 w-full bg-ghana-gold-flag text-ghana-green-dark font-bold text-sm py-4 rounded-btn active:brightness-90 transition-all"
-                    >
-                      <Plus className="w-4 h-4" /> List Your Property
-                    </Link>
+                    <>
+                      <Link
+                        href="/dashboard"
+                        onClick={close}
+                        className="flex items-center justify-center gap-2 w-full bg-white/[0.07] border border-white/[0.12] text-white font-semibold text-sm py-3.5 rounded-btn active:brightness-90 transition-all"
+                      >
+                        My Listings
+                      </Link>
+                      <Link
+                        href="/list"
+                        onClick={close}
+                        className="flex items-center justify-center gap-2 w-full bg-ghana-gold-flag text-ghana-green-dark font-bold text-sm py-4 rounded-btn active:brightness-90 transition-all"
+                      >
+                        <Plus className="w-4 h-4" /> List Your Property
+                      </Link>
+                    </>
                   )}
 
                   <button
