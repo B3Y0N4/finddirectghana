@@ -3,14 +3,15 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import {
-  Bed, Bath, Maximize2, MapPin, CheckCircle, Shield, MessageCircle,
+  Bed, Bath, Maximize2, MapPin, CheckCircle, Shield,
   Phone, Calendar, Eye, ArrowLeft, Home, Star, AlertTriangle,
 } from 'lucide-react'
 import PropertyCard from '@/components/PropertyCard'
 import PropertyContactBar from '@/components/PropertyContactBar'
+import ContactCard from '@/components/ContactCard'
 import LandlordReviews from '@/components/LandlordReviews'
 import { getListing, getAllSlugs, getRelated } from '@/lib/data'
-import { formatPrice, propertyTypeLabel, bedroomLabel, waLink } from '@/lib/utils'
+import { formatPrice, propertyTypeLabel, bedroomLabel } from '@/lib/utils'
 import { getReviewsForLandlord, getLandlordRating } from '@/lib/reviews'
 
 export const revalidate = 60
@@ -190,47 +191,14 @@ export default async function PropertyPage({ params }: Props) {
           <div className="lg:col-span-1">
             <div className="sticky top-[84px] space-y-4">
 
-              {/* Price card */}
-              <div className="bg-white border border-border-col rounded-card p-5 shadow-card">
-                <div className="mb-4">
-                  <p className="font-display font-bold text-ink text-3xl">
-                    {formatPrice(p.price_ghs)}
-                    <span className="text-muted font-normal text-base ml-1">/month</span>
-                  </p>
-                  <p className="text-muted text-xs mt-1">
-                    {p.advance_months} months advance · {formatPrice(p.price_ghs * p.advance_months)} total advance
-                  </p>
-                </div>
-
-                {isRented ? (
-                  <div className="bg-ghana-red/10 border border-ghana-red/20 rounded-btn p-3 text-center">
-                    <p className="text-ghana-red font-semibold text-sm">This property is currently rented</p>
-                    <p className="text-muted text-xs mt-1">Check back later or browse similar listings</p>
-                  </div>
-                ) : (
-                  <>
-                    <a
-                      href={waLink(p.owner.phone, p.title)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 w-full bg-[#25D366] text-white font-bold text-sm py-3.5 rounded-btn hover:bg-[#20b858] transition-colors mb-2"
-                    >
-                      <MessageCircle className="w-4 h-4 fill-white" />
-                      Contact on WhatsApp
-                    </a>
-                    <a
-                      href={`tel:+${p.owner.phone}`}
-                      className="flex items-center justify-center gap-2 w-full border border-ghana-green text-ghana-green font-semibold text-sm py-3 rounded-btn hover:bg-ghana-green-50 transition-colors"
-                    >
-                      <Phone className="w-4 h-4" />
-                      Call Owner
-                    </a>
-                    <p className="text-center text-[10px] text-muted mt-2">
-                      No viewing fee. No agent commission. Speak directly to the owner.
-                    </p>
-                  </>
-                )}
-              </div>
+              {/* Price + contact card */}
+              <ContactCard
+                slug={slug}
+                title={p.title}
+                price={p.price_ghs}
+                advanceMonths={p.advance_months}
+                isRented={isRented}
+              />
 
               {/* Owner card */}
               <div className="bg-white border border-border-col rounded-card p-5 shadow-card">
@@ -309,7 +277,7 @@ export default async function PropertyPage({ params }: Props) {
 
         {/* Mobile sticky WhatsApp bar */}
         <PropertyContactBar
-          phone={p.owner.phone}
+          slug={slug}
           title={p.title}
           price={p.price_ghs}
           isRented={isRented}
