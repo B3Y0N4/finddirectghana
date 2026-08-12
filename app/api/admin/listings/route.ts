@@ -49,5 +49,20 @@ export async function PATCH(req: Request) {
     .eq('id', id)
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+  if (status === 'approved') {
+    // Promote card verification for listings that had Ghana Card docs
+    // uploaded at submission (verification_level was set to 'pending' then).
+    // No-ops for listings with no docs (verification_level 'none') or
+    // already-full listings.
+    const { error: verifyError } = await sb
+      .from('listings')
+      .update({ verified_card: true, verification_level: 'full' })
+      .eq('id', id)
+      .eq('verification_level', 'pending')
+
+    if (verifyError) console.error('Card verification promote error:', verifyError.message)
+  }
+
   return NextResponse.json({ ok: true })
 }
