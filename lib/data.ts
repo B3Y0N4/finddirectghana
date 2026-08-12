@@ -2,7 +2,7 @@
  * Central data access layer.
  * Reads from Supabase when env vars are present, falls back to static seed data.
  */
-import type { OwnerListing, Property, PropertyType, VerificationLevel } from './types'
+import type { EditableListing, OwnerListing, Property, PropertyType, VerificationLevel } from './types'
 import { properties as staticProperties } from './properties'
 
 const hasSupabase =
@@ -156,4 +156,51 @@ export async function getListingsForOwner(ownerId: string): Promise<OwnerListing
   }
 
   return (data ?? []).map(rowToOwnerListing)
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function rowToEditableListing(row: Record<string, any>): EditableListing {
+  return {
+    slug:              row.slug,
+    title:             row.title,
+    type:              row.type as PropertyType,
+    description:       row.description ?? '',
+    bedrooms:          row.bedrooms ?? 0,
+    bathrooms:         row.bathrooms ?? 0,
+    furnished:         row.furnished ?? false,
+    features:          row.features ?? [],
+    neighborhood:      row.neighborhood,
+    address:           row.address ?? '',
+    price_ghs:         Number(row.price_ghs),
+    advance_months:    row.advance_months ?? 12,
+    price_negotiable:  row.price_negotiable ?? false,
+    video_url:         row.video_url ?? '',
+    image_urls:        row.image_urls ?? [],
+    owner_name:        row.owner_name,
+    owner_phone:       row.owner_phone,
+  }
+}
+
+/**
+ * A single listing for the edit form — scoped to a specific owner.
+ * Returns null if the slug doesn't exist, isn't owned by this user, or
+ * hasn't passed moderation yet (same "already approved" guard the status
+ * toggle uses), so a non-owner or a still-pending listing can't be edited.
+ */
+export async function getListingForEdit(slug: string, ownerId: string): Promise<EditableListing | null> {
+  if (!hasSupabase) return null
+
+  const { createServerClient } = await import('./supabase-server')
+  const sb = createServerClient()
+
+  const { data, error } = await sb
+    .from('listings')
+    .select('*')
+    .eq('slug', slug)
+    .eq('owner_id', ownerId)
+    .in('status', ['approved', 'rented', 'paused'])
+    .single()
+
+  if (error || !data) return null
+  return rowToEditableListing(data)
 }

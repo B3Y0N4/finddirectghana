@@ -33,7 +33,7 @@ export async function middleware(req: NextRequest) {
   // ── USER-PROTECTED ROUTES ─────────────────────────────────────
   // /list page requires login (any role)
   // POST to /api/listings and /api/reviews requires login
-  const isProtectedPage = pathname === '/list' || pathname === '/dashboard'
+  const isProtectedPage = pathname === '/list' || pathname.startsWith('/dashboard')
   const isProtectedPost = method === 'POST' &&
     (pathname === '/api/listings' || pathname === '/api/reviews')
 
@@ -64,7 +64,7 @@ export const config = {
     '/admin/:path*',
     '/api/admin/:path*',
     '/list',
-    '/dashboard',
+    '/dashboard/:path*',
     '/api/listings',
     '/api/reviews',
   ],

@@ -31,6 +31,29 @@ export interface OwnerListing {
   created_at: string
 }
 
+// Full editable shape for the landlord "edit listing" form — everything a
+// landlord can change themselves, minus identity-verification fields
+// (those stay tied to the original onboarding submission).
+export interface EditableListing {
+  slug: string
+  title: string
+  type: PropertyType
+  description: string
+  bedrooms: number
+  bathrooms: number
+  furnished: boolean
+  features: string[]
+  neighborhood: string
+  address: string
+  price_ghs: number
+  advance_months: number
+  price_negotiable: boolean
+  video_url: string
+  image_urls: string[]
+  owner_name: string
+  owner_phone: string
+}
+
 export interface Property {
   slug: string
   title: string

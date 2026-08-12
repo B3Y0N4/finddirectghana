@@ -108,7 +108,15 @@ export default async function DashboardPage() {
                   )}
 
                   {(listing.status === 'approved' || listing.status === 'rented' || listing.status === 'paused') && (
-                    <ListingStatusToggle slug={listing.slug} status={listing.status} />
+                    <div className="flex flex-wrap items-center gap-2">
+                      <ListingStatusToggle slug={listing.slug} status={listing.status} />
+                      <Link
+                        href={`/dashboard/${listing.slug}/edit`}
+                        className="text-xs font-semibold px-3 py-2 rounded-btn border border-border-col text-ink hover:border-ghana-green hover:text-ghana-green transition-colors"
+                      >
+                        Edit
+                      </Link>
+                    </div>
                   )}
                 </div>
               </div>

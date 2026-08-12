@@ -34,6 +34,25 @@ export const landlordListingPatchSchema = z.object({
   status: z.enum(['approved', 'rented', 'paused']),
 })
 
+export const listingEditSchema = z.object({
+  title:           z.string().trim().min(1, 'Title is required'),
+  type:            z.enum(['apartment', 'house', 'chamber_and_hall', 'studio', 'townhouse']),
+  bedrooms:        z.coerce.number().int().min(0),
+  bathrooms:       z.coerce.number().int().min(1),
+  furnished:       z.boolean(),
+  features:        z.array(z.string()).optional(),
+  neighborhood:    z.string().trim().min(1, 'Neighborhood is required'),
+  address:         z.string().trim().optional(),
+  price:           z.coerce.number().positive('Price must be greater than 0'),
+  advanceMonths:   z.coerce.number().int().min(1),
+  priceNegotiable: z.boolean(),
+  description:     z.string().trim().optional(),
+  videoUrl:        z.string().trim().optional(),
+  name:            z.string().trim().min(1, 'Name is required'),
+  phone:           z.string().trim().min(1, 'Phone is required'),
+  keepImages:      z.array(z.string()).optional(),
+})
+
 export const reportSchema = z.object({
   url:         z.string().trim().optional(),
   issueType:   z.enum(['fake', 'fraud', 'wrong_price', 'unresponsive', 'wrong_photos', 'already_rented', 'other']),
