@@ -23,8 +23,29 @@ export const categoryLabels: Record<ReviewCategory, string> = {
   general:       'General',
 }
 
-/* Sample review data — replace with database in production */
-export const reviews: Review[] = [
+const hasSupabase =
+  !!process.env.NEXT_PUBLIC_SUPABASE_URL &&
+  !!process.env.SUPABASE_SERVICE_ROLE_KEY
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function rowToReview(row: Record<string, any>): Review {
+  return {
+    id:               row.id,
+    landlordSlug:     row.landlord_slug,
+    reviewerType:     row.reviewer_type,
+    reviewerName:     row.reviewer_name,
+    reviewerInitials: row.reviewer_initials ?? '',
+    date:             (row.created_at as string).split('T')[0],
+    rating:           row.rating,
+    categories:       row.categories ?? [],
+    title:            row.title,
+    body:             row.body,
+    verified:         row.verified ?? false,
+  }
+}
+
+/* Offline/dev fallback data — used only when Supabase env vars are absent */
+const sampleReviews: Review[] = [
   {
     id: 'r1',
     landlordSlug: 'landlord-kwame-asante',
@@ -79,12 +100,25 @@ export const reviews: Review[] = [
   },
 ]
 
-export function getReviewsForLandlord(landlordSlug: string): Review[] {
-  return reviews.filter(r => r.landlordSlug === landlordSlug)
+export async function getReviewsForLandlord(landlordId: string | null, landlordSlug: string): Promise<Review[]> {
+  if (!hasSupabase) return sampleReviews.filter(r => r.landlordSlug === landlordSlug)
+
+  const { createServerClient } = await import('./supabase-server')
+  const sb = createServerClient()
+
+  let query = sb.from('reviews').select('*').eq('status', 'approved').order('created_at', { ascending: false })
+  query = landlordId ? query.eq('landlord_id', landlordId) : query.eq('landlord_slug', landlordSlug)
+
+  const { data, error } = await query
+  if (error) {
+    console.error('[reviews] getReviewsForLandlord:', error.message)
+    return []
+  }
+  return (data ?? []).map(rowToReview)
 }
 
-export function getLandlordRating(landlordSlug: string): { average: number; count: number } {
-  const rs = getReviewsForLandlord(landlordSlug)
+export async function getLandlordRating(landlordId: string | null, landlordSlug: string): Promise<{ average: number; count: number }> {
+  const rs = await getReviewsForLandlord(landlordId, landlordSlug)
   if (!rs.length) return { average: 0, count: 0 }
   const average = rs.reduce((sum, r) => sum + r.rating, 0) / rs.length
   return { average: Math.round(average * 10) / 10, count: rs.length }

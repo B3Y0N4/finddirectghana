@@ -8,6 +8,8 @@ import type { ReviewCategory, ReviewerType } from '@/lib/reviews'
 
 interface Props {
   landlordName: string
+  landlordId: string | null
+  landlordSlug: string
   onClose?: () => void
 }
 
@@ -43,7 +45,7 @@ function StarPicker({ value, onChange }: { value: number; onChange: (n: number) 
 
 const inputClass = 'w-full px-4 py-3 border border-border-col rounded-btn text-sm text-ink focus:outline-none focus:border-ghana-green focus:ring-1 focus:ring-ghana-green bg-white'
 
-export default function WriteReviewForm({ landlordName, onClose }: Props) {
+export default function WriteReviewForm({ landlordName, landlordId, landlordSlug, onClose }: Props) {
   const [authChecked, setAuthChecked] = useState(false)
   const [authed,      setAuthed]      = useState(false)
   const [submitted,   setSubmitted]   = useState(false)
@@ -78,7 +80,8 @@ export default function WriteReviewForm({ landlordName, onClose }: Props) {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({
-        landlordSlug: `landlord-${landlordName.toLowerCase().replace(/\s+/g, '-')}`,
+        landlordId,
+        landlordSlug,
         reviewerType,
         name,
         rating,

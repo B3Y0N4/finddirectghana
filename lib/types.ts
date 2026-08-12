@@ -3,6 +3,7 @@ export type PropertyStatus = 'available' | 'rented' | 'paused'
 export type VerificationLevel = 'none' | 'phone' | 'full'
 
 export interface Owner {
+  id: string | null
   name: string
   phone: string        // E.164 format for WhatsApp link
   initials: string

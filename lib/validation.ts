@@ -14,6 +14,7 @@ export const loginSchema = z.object({
 })
 
 export const reviewSchema = z.object({
+  landlordId:   z.string().uuid().nullable().optional(),
   landlordSlug: z.string().trim().min(1, 'landlordSlug is required'),
   reviewerType: z.enum(['tenant', 'landlord']),
   name:         z.string().trim().min(1, 'Name is required'),

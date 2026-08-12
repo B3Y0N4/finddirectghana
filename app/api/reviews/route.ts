@@ -24,6 +24,7 @@ export async function POST(req: Request) {
       .join('')
 
     const { data, error } = await sb.from('reviews').insert({
+      landlord_id:       body.landlordId ?? null,
       landlord_slug:     body.landlordSlug,
       reviewer_type:     body.reviewerType,
       reviewer_id:       session.sub,

@@ -8,6 +8,7 @@ import type { Review } from '@/lib/reviews'
 
 interface Props {
   landlordName: string
+  landlordId: string | null
   landlordSlug: string
   reviews: Review[]
   average: number
@@ -27,7 +28,7 @@ function RatingBar({ label, value, max }: { label: string; value: number; max: n
   )
 }
 
-export default function LandlordReviews({ landlordName, landlordSlug, reviews, average, count }: Props) {
+export default function LandlordReviews({ landlordName, landlordId, landlordSlug, reviews, average, count }: Props) {
   const [showForm, setShowForm] = useState(false)
 
   const dist = [5,4,3,2,1].map(n => ({
@@ -115,6 +116,8 @@ export default function LandlordReviews({ landlordName, landlordSlug, reviews, a
             <div className="p-5">
               <WriteReviewForm
                 landlordName={landlordName}
+                landlordId={landlordId}
+                landlordSlug={landlordSlug}
                 onClose={() => setShowForm(false)}
               />
             </div>

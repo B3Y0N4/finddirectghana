@@ -39,14 +39,15 @@ export default async function PropertyPage({ params }: Props) {
   const p = await getListing(slug)
   if (!p) notFound()
 
-  const [related] = await Promise.all([
-    getRelated(slug, p.neighborhood),
-  ])
-
   const isRented     = p.status === 'rented'
+  const landlordId   = p.owner.id
   const landlordSlug = `landlord-${p.owner.name.toLowerCase().replace(/\s+/g, '-')}`
-  const ownerReviews = getReviewsForLandlord(landlordSlug)
-  const ownerRating  = getLandlordRating(landlordSlug)
+
+  const [related, ownerReviews, ownerRating] = await Promise.all([
+    getRelated(slug, p.neighborhood),
+    getReviewsForLandlord(landlordId, landlordSlug),
+    getLandlordRating(landlordId, landlordSlug),
+  ])
 
   return (
     <div className="pt-nav pb-20 lg:pb-0">
@@ -317,6 +318,7 @@ export default async function PropertyPage({ params }: Props) {
         {/* Landlord reviews */}
         <LandlordReviews
           landlordName={p.owner.name}
+          landlordId={landlordId}
           landlordSlug={landlordSlug}
           reviews={ownerReviews}
           average={ownerRating.average}

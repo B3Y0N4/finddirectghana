@@ -39,6 +39,7 @@ function rowToProperty(row: Record<string, any>): Property {
     features:       row.features ?? [],
     images:         row.image_urls ?? [],
     owner: {
+      id:             row.owner_id ?? null,
       name:           row.owner_name,
       phone:          row.owner_phone,
       initials,
