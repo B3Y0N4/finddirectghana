@@ -4,16 +4,11 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { AlertTriangle, ArrowLeft, CheckCircle, Upload, X } from 'lucide-react'
-import { propertyTypes, neighborhoods } from '@/lib/properties'
+import { propertyTypes, neighborhoods, propertyFeatures, advanceMonthOptions } from '@/lib/properties'
 import { cn } from '@/lib/utils'
 import type { EditableListing } from '@/lib/types'
 
-const features = [
-  'Generator', '24h Water', 'Air Conditioning', 'Security',
-  'DSTV Ready', 'Balcony', 'Parking', 'Borehole Water',
-  'Boys Quarters', 'Garden', 'Garage', 'Swimming Pool',
-  'Gym', 'Fiber Internet', 'Tiled Floors', 'Furnished Kitchen',
-]
+const features = propertyFeatures
 
 const inputClass = 'w-full px-4 py-3.5 border border-border-col rounded-btn text-sm text-ink focus:outline-none focus:border-ghana-green focus:ring-1 focus:ring-ghana-green bg-white'
 const labelClass = 'block text-sm font-semibold text-ink mb-1.5'
@@ -283,7 +278,7 @@ export default function EditListingForm({ listing }: Props) {
             <div>
               <label className={labelClass}>Advance Payment Required</label>
               <select className={inputClass} value={form.advanceMonths} onChange={e => set('advanceMonths', e.target.value)}>
-                {['3', '6', '12', '18', '24'].map(m => <option key={m} value={m}>{m} months advance</option>)}
+                {advanceMonthOptions.map(m => <option key={m} value={m}>{m} months advance</option>)}
               </select>
             </div>
 

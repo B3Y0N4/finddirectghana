@@ -322,12 +322,19 @@ export const neighborhoods = [
   'East Legon', 'Spintex Road', 'Airport Residential', 'Cantonments',
   'Labone', 'Osu', 'Adenta', 'Haatso', 'Madina', 'Achimota',
   'Tema Community 9', 'Ashaiman', 'Dansoman', 'Kasoa',
+  'Dzorwulu', 'Roman Ridge', 'North Ridge', 'Abelemkpe', 'Kokomlemle',
+  'Legon', 'West Legon', 'North Legon', 'North Kaneshie', 'Teshie',
+  'Nungua', 'La', 'Sakumono', 'Dome', 'Taifa', 'Weija',
+  'Tema Community 18', 'Tema Community 25',
 ]
 
 const NEIGHBORHOOD_CITY: Record<string, string> = {
-  'Tema Community 9': 'Tema',
-  'Ashaiman':          'Tema',
-  'Kasoa':             'Kasoa',
+  'Tema Community 9':  'Tema',
+  'Tema Community 18': 'Tema',
+  'Tema Community 25': 'Tema',
+  'Sakumono':           'Tema',
+  'Ashaiman':           'Tema',
+  'Kasoa':              'Kasoa',
 }
 
 /** Derives the city from a neighborhood — most of the list is Accra proper. */
@@ -343,3 +350,17 @@ export const propertyTypes = [
   { value: 'townhouse',        label: 'Townhouse' },
   { value: 'hotel_hostel',     label: 'Hotel / Hostel' },
 ]
+
+// Shared between app/list/page.tsx (create) and components/EditListingForm.tsx
+// (edit) — was previously duplicated verbatim in both, risking drift.
+export const propertyFeatures = [
+  'Generator', '24h Water', 'Air Conditioning', 'Security',
+  'DSTV Ready', 'Balcony', 'Parking', 'Borehole Water',
+  'Boys Quarters', 'Garden', 'Garage', 'Swimming Pool',
+  'Gym', 'Fiber Internet', 'Tiled Floors', 'Furnished Kitchen',
+  'CCTV', 'Elevator', 'Pet Friendly', 'Solar Backup', 'Water Heater',
+]
+
+// Ceiling extended to 36 — premium-area listings can legitimately ask for
+// up to 3 years advance (see lib/blog.ts's advance-rent coverage).
+export const advanceMonthOptions = ['3', '6', '12', '18', '24', '36']

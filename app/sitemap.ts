@@ -1,8 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { getListings } from '@/lib/data'
 import { posts } from '@/lib/blog'
-
-const BASE = 'https://finddirectgh.com'
+import { SITE_URL as BASE } from '@/lib/site'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const listings = await getListings()

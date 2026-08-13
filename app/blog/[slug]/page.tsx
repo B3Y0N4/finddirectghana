@@ -3,6 +3,7 @@ import { notFound }        from 'next/navigation'
 import Link                from 'next/link'
 import { ArrowLeft, Clock, ArrowRight, BookOpen } from 'lucide-react'
 import { posts, getPost, getRelatedPosts } from '@/lib/blog'
+import { SITE_URL } from '@/lib/site'
 
 interface Props { params: Promise<{ slug: string }> }
 
@@ -14,7 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const post = getPost(slug)
   if (!post) return {}
-  const url = `https://finddirectgh.com/blog/${slug}`
+  const url = `${SITE_URL}/blog/${slug}`
   return {
     title: post.title,
     description: post.excerpt,
@@ -48,7 +49,7 @@ export default async function BlogPostPage({ params }: Props) {
     headline: post.title,
     description: post.excerpt,
     datePublished: post.publishedAt,
-    url: `https://finddirectgh.com/blog/${post.slug}`,
+    url: `${SITE_URL}/blog/${post.slug}`,
     author: { '@type': 'Organization', name: 'Find Direct Ghana' },
     publisher: { '@type': 'Organization', name: 'Find Direct Ghana' },
   }

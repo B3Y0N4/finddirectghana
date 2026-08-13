@@ -10,9 +10,9 @@ import { getListings }   from '@/lib/data'
 export const revalidate = 60
 
 export const metadata: Metadata = {
-  title: 'Browse Properties — Owner-Direct Rentals in Accra',
+  title: 'Browse Properties — Owner-Direct Rentals in Accra, Tema & Kasoa',
   description:
-    'Browse verified owner-direct rental listings in Accra and Ghana. Filter by neighborhood, type, bedrooms, and price. No agents, no viewing fees.',
+    'Browse verified owner-direct rental listings across Greater Accra — Accra, Tema, and Kasoa. Filter by neighborhood, type, bedrooms, and price. No agents, no viewing fees.',
 }
 
 interface SearchParams {

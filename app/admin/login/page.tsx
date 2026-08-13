@@ -46,7 +46,7 @@ export default function AdminLogin() {
               value={email}
               onChange={e => setEmail(e.target.value)}
               className="w-full px-4 py-3 border border-border-col rounded-btn text-sm focus:outline-none focus:border-ghana-green focus:ring-1 focus:ring-ghana-green"
-              placeholder="admin@finddrectgh.com"
+              placeholder="admin@finddirectgh.com"
               required
               autoComplete="email"
             />

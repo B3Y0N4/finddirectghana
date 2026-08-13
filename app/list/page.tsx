@@ -7,7 +7,7 @@ import {
   Home, MapPin, Camera, Phone, CheckCircle, ChevronRight,
   Upload, DollarSign, Shield, ArrowLeft, Star,
 } from 'lucide-react'
-import { propertyTypes, neighborhoods } from '@/lib/properties'
+import { propertyTypes, neighborhoods, propertyFeatures, advanceMonthOptions } from '@/lib/properties'
 import { cn } from '@/lib/utils'
 
 const steps = [
@@ -18,12 +18,7 @@ const steps = [
   { id: 5, label: 'Contact',  icon: Phone      },
 ]
 
-const features = [
-  'Generator', '24h Water', 'Air Conditioning', 'Security',
-  'DSTV Ready', 'Balcony', 'Parking', 'Borehole Water',
-  'Boys Quarters', 'Garden', 'Garage', 'Swimming Pool',
-  'Gym', 'Fiber Internet', 'Tiled Floors', 'Furnished Kitchen',
-]
+const features = propertyFeatures
 
 export default function ListPage() {
   const router = useRouter()
@@ -439,7 +434,7 @@ export default function ListPage() {
                 <div>
                   <label className={labelClass}>Advance Payment Required</label>
                   <select className={inputClass} value={form.advanceMonths} onChange={e => set('advanceMonths', e.target.value)}>
-                    {['3', '6', '12', '18', '24'].map(m => <option key={m} value={m}>{m} months advance</option>)}
+                    {advanceMonthOptions.map(m => <option key={m} value={m}>{m} months advance</option>)}
                   </select>
                 </div>
 

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase-server'
 import { getSession } from '@/lib/auth'
-import { uploadFile } from '@/lib/storage'
+import { uploadFile, PROPERTY_IMAGES_BUCKET, VERIFICATION_DOCS_BUCKET } from '@/lib/storage'
 import { cityForNeighborhood } from '@/lib/properties'
 import { isValidGhanaPhone } from '@/lib/validation'
 import { rateLimit, getClientIp } from '@/lib/rateLimit'
@@ -46,7 +46,7 @@ export async function POST(req: Request) {
       const file = fd.get(`photo_${i}`) as File | null
       if (!file || file.size === 0) break
       const ext = file.name.split('.').pop() ?? 'jpg'
-      const url = await uploadFile(sb, 'property-images', file, `listings/${ts}_${i}.${ext}`)
+      const url = await uploadFile(sb, PROPERTY_IMAGES_BUCKET, file, `listings/${ts}_${i}.${ext}`)
       if (url) photoUrls.push(url)
       i++
     }
@@ -58,13 +58,13 @@ export async function POST(req: Request) {
 
     const [cardFrontPath, cardBackPath, selfiePath] = await Promise.all([
       cardFrontFile && cardFrontFile.size > 0
-        ? uploadFile(sb, 'verification-docs', cardFrontFile, `${ts}_front.${cardFrontFile.name.split('.').pop() ?? 'jpg'}`)
+        ? uploadFile(sb, VERIFICATION_DOCS_BUCKET, cardFrontFile, `${ts}_front.${cardFrontFile.name.split('.').pop() ?? 'jpg'}`)
         : Promise.resolve(null),
       cardBackFile && cardBackFile.size > 0
-        ? uploadFile(sb, 'verification-docs', cardBackFile, `${ts}_back.${cardBackFile.name.split('.').pop() ?? 'jpg'}`)
+        ? uploadFile(sb, VERIFICATION_DOCS_BUCKET, cardBackFile, `${ts}_back.${cardBackFile.name.split('.').pop() ?? 'jpg'}`)
         : Promise.resolve(null),
       selfieFile && selfieFile.size > 0
-        ? uploadFile(sb, 'verification-docs', selfieFile, `${ts}_selfie.${selfieFile.name.split('.').pop() ?? 'jpg'}`)
+        ? uploadFile(sb, VERIFICATION_DOCS_BUCKET, selfieFile, `${ts}_selfie.${selfieFile.name.split('.').pop() ?? 'jpg'}`)
         : Promise.resolve(null),
     ])
 

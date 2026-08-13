@@ -4,6 +4,7 @@ import './globals.css'
 import Nav from '@/components/Nav'
 import BottomNav from '@/components/BottomNav'
 import Footer from '@/components/Footer'
+import { SITE_URL } from '@/lib/site'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -31,8 +32,8 @@ export const metadata: Metadata = {
     template: '%s | Find Direct Ghana',
   },
   description:
-    'Browse verified owner-direct property listings in Accra, Ghana. No agents. No viewing fees. No commission. Contact landlords directly on WhatsApp.',
-  keywords: 'Ghana property, Accra rentals, rent direct, no agent Ghana, properties for rent Accra, direct landlord Ghana',
+    'Browse verified owner-direct property listings across Greater Accra — Accra, Tema, and Kasoa. No agents. No viewing fees. No commission. Contact landlords directly on WhatsApp.',
+  keywords: 'Ghana property, Accra rentals, Tema rentals, Kasoa rentals, rent direct, no agent Ghana, properties for rent Accra, direct landlord Ghana',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
@@ -43,9 +44,9 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_GH',
     siteName: 'Find Direct Ghana',
-    url: 'https://finddirectgh.com',
+    url: SITE_URL,
   },
-  metadataBase: new URL('https://finddirectgh.com'),
+  metadataBase: new URL(SITE_URL),
   twitter: {
     card: 'summary_large_image',
   },
@@ -57,18 +58,22 @@ const jsonLd = {
     {
       '@type': 'Organization',
       name: 'Find Direct Ghana',
-      url: 'https://finddirectgh.com',
-      logo: 'https://finddirectgh.com/icon',
-      description: 'Owner-direct property listings in Accra, Ghana — no agents, no viewing fees, no commission.',
-      areaServed: { '@type': 'City', name: 'Accra' },
+      url: SITE_URL,
+      logo: `${SITE_URL}/icon`,
+      description: 'Owner-direct property listings across Greater Accra, Ghana — no agents, no viewing fees, no commission.',
+      areaServed: [
+        { '@type': 'City', name: 'Accra' },
+        { '@type': 'City', name: 'Tema' },
+        { '@type': 'City', name: 'Kasoa' },
+      ],
     },
     {
       '@type': 'WebSite',
       name: 'Find Direct Ghana',
-      url: 'https://finddirectgh.com',
+      url: SITE_URL,
       potentialAction: {
         '@type': 'SearchAction',
-        target: 'https://finddirectgh.com/listings?q={search_term_string}',
+        target: `${SITE_URL}/listings?q={search_term_string}`,
         'query-input': 'required name=search_term_string',
       },
     },

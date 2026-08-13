@@ -14,6 +14,7 @@ import LandlordReviews from '@/components/LandlordReviews'
 import { getListing, getAllSlugs, getRelated } from '@/lib/data'
 import { formatPrice, propertyTypeLabel, bedroomLabel } from '@/lib/utils'
 import { getReviewsForLandlord, getLandlordRating } from '@/lib/reviews'
+import { SITE_URL } from '@/lib/site'
 
 export const revalidate = 60
 
@@ -56,7 +57,7 @@ export default async function PropertyPage({ params }: Props) {
     '@type': 'RealEstateListing',
     name: p.title,
     description: p.description,
-    url: `https://finddirectgh.com/property/${p.slug}`,
+    url: `${SITE_URL}/property/${p.slug}`,
     datePosted: p.listed_date,
     image: p.images,
     address: {

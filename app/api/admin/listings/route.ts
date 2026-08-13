@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase-server'
 import { adminPatchSchema } from '@/lib/validation'
+import { VERIFICATION_DOCS_BUCKET } from '@/lib/storage'
 
 async function withSignedUrls(sb: ReturnType<typeof createServerClient>, listings: Record<string, unknown>[]) {
   return Promise.all(listings.map(async listing => {
@@ -9,7 +10,7 @@ async function withSignedUrls(sb: ReturnType<typeof createServerClient>, listing
       const path = listing[field] as string | null
       if (path && !path.startsWith('http')) {
         const { data } = await sb.storage
-          .from('verification-docs')
+          .from(VERIFICATION_DOCS_BUCKET)
           .createSignedUrl(path, 3600)
         if (data?.signedUrl) signed[field] = data.signedUrl
       }

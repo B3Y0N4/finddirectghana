@@ -6,6 +6,12 @@ import { rateLimit, getClientIp } from '@/lib/rateLimit'
 
 const COOKIE = 'admin_token'
 
+function requireEnv(name: 'ADMIN_EMAIL' | 'ADMIN_PASSWORD'): string {
+  const value = process.env[name]
+  if (!value) throw new Error(`Missing required env var: ${name}`)
+  return value
+}
+
 function timingSafeStringEqual(a: string, b: string): boolean {
   const bufA = Buffer.from(a)
   const bufB = Buffer.from(b)
@@ -27,8 +33,8 @@ export async function POST(req: Request) {
 
   const { email, password } = await req.json()
 
-  const validEmail    = typeof email === 'string' && timingSafeStringEqual(email, process.env.ADMIN_EMAIL ?? '')
-  const validPassword = typeof password === 'string' && timingSafeStringEqual(password, process.env.ADMIN_PASSWORD ?? '')
+  const validEmail    = typeof email === 'string' && timingSafeStringEqual(email, requireEnv('ADMIN_EMAIL'))
+  const validPassword = typeof password === 'string' && timingSafeStringEqual(password, requireEnv('ADMIN_PASSWORD'))
 
   if (!validEmail || !validPassword) {
     return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })

@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og'
+import { SITE_URL } from '@/lib/site'
 
 export const runtime = 'edge'
 export const alt = 'Find Direct Ghana — Rent Directly from the Owner. No Agents. No Fees.'
@@ -103,7 +104,7 @@ export default function OGImage() {
               </div>
             ))}
           </div>
-          <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: 16, fontFamily: 'sans-serif' }}>finddirectgh.com</span>
+          <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: 16, fontFamily: 'sans-serif' }}>{SITE_URL.replace('https://', '')}</span>
         </div>
       </div>
     </div>,

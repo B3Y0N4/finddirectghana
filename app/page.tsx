@@ -14,7 +14,7 @@ export const revalidate = 60
 export const metadata: Metadata = {
   title: 'Find Direct Ghana — Rent Directly from the Owner | No Agent Fees',
   description:
-    'Browse verified owner-direct property listings in Accra, Ghana. No agents. No viewing fees. No commission. Contact landlords directly on WhatsApp.',
+    'Browse verified owner-direct property listings across Greater Accra — Accra, Tema, and Kasoa. No agents. No viewing fees. No commission. Contact landlords directly on WhatsApp.',
 }
 
 const NEIGHBORHOODS = [

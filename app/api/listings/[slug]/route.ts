@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase-server'
 import { getSession } from '@/lib/auth'
-import { uploadFile } from '@/lib/storage'
+import { uploadFile, PROPERTY_IMAGES_BUCKET } from '@/lib/storage'
 import { landlordListingPatchSchema, listingEditSchema } from '@/lib/validation'
 import { cityForNeighborhood } from '@/lib/properties'
 
@@ -108,7 +108,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ slug: st
     const file = fd.get(`photo_${i}`) as File | null
     if (!file || file.size === 0) break
     const ext = file.name.split('.').pop() ?? 'jpg'
-    const url = await uploadFile(sb, 'property-images', file, `listings/${ts}_edit_${i}.${ext}`)
+    const url = await uploadFile(sb, PROPERTY_IMAGES_BUCKET, file, `listings/${ts}_edit_${i}.${ext}`)
     if (url) newPhotoUrls.push(url)
     i++
   }
