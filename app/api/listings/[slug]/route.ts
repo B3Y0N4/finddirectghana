@@ -3,6 +3,7 @@ import { createServerClient } from '@/lib/supabase-server'
 import { getSession } from '@/lib/auth'
 import { uploadFile } from '@/lib/storage'
 import { landlordListingPatchSchema, listingEditSchema } from '@/lib/validation'
+import { cityForNeighborhood } from '@/lib/properties'
 
 const EDITABLE_STATUSES = ['approved', 'rented', 'paused'] as const
 // PUT (full edit) additionally allows 'rejected', so a landlord can fix the
@@ -124,6 +125,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ slug: st
       furnished:         body.furnished,
       features:          body.features ?? [],
       neighborhood:      body.neighborhood,
+      city:              cityForNeighborhood(body.neighborhood),
       address:           body.address ?? null,
       price_ghs:         body.price,
       advance_months:    body.advanceMonths,

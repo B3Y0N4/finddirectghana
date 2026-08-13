@@ -3,12 +3,17 @@ import { SignJWT } from 'jose'
 import { createServerClient, createAuthClient } from '@/lib/supabase-server'
 import { jwtSecret } from '@/lib/jwt-secret'
 import { loginSchema } from '@/lib/validation'
+import { rateLimit, getClientIp } from '@/lib/rateLimit'
 
 const COOKIE  = 'user_token'
 const MAX_AGE = 60 * 60 * 24 * 30
 
 export async function POST(req: Request) {
   try {
+    if (!rateLimit(`login:${getClientIp(req)}`, 8, 15 * 60 * 1000)) {
+      return NextResponse.json({ error: 'Too many attempts — try again later' }, { status: 429 })
+    }
+
     const parsed = loginSchema.safeParse(await req.json())
     if (!parsed.success) {
       return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 })

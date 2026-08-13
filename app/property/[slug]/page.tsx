@@ -9,6 +9,7 @@ import {
 import PropertyCard from '@/components/PropertyCard'
 import PropertyContactBar from '@/components/PropertyContactBar'
 import ContactCard from '@/components/ContactCard'
+import PropertyMap from '@/components/PropertyMap'
 import LandlordReviews from '@/components/LandlordReviews'
 import { getListing, getAllSlugs, getRelated } from '@/lib/data'
 import { formatPrice, propertyTypeLabel, bedroomLabel } from '@/lib/utils'
@@ -168,16 +169,10 @@ export default async function PropertyPage({ params }: Props) {
               </div>
             </div>
 
-            {/* Map placeholder */}
+            {/* Map */}
             <div className="mb-6">
               <h2 className="font-display font-semibold text-ink text-lg mb-3">Location</h2>
-              <div className="bg-ghana-green-50 border border-ghana-green-100 rounded-card h-48 flex items-center justify-center">
-                <div className="text-center">
-                  <MapPin className="w-8 h-8 text-ghana-green mx-auto mb-2" />
-                  <p className="font-semibold text-ink text-sm">{p.neighborhood}, {p.city}</p>
-                  <p className="text-muted text-xs mt-1">Exact pin shared on WhatsApp after contact</p>
-                </div>
-              </div>
+              <PropertyMap neighborhood={p.neighborhood} city={p.city} />
             </div>
 
             {/* Listed date */}

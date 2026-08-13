@@ -2,34 +2,9 @@ import { NextResponse } from 'next/server'
 import { SignJWT } from 'jose'
 import { timingSafeEqual } from 'crypto'
 import { jwtSecret } from '@/lib/jwt-secret'
+import { rateLimit, getClientIp } from '@/lib/rateLimit'
 
 const COOKIE = 'admin_token'
-
-// In-memory lockout — resets on redeploy/restart and is per-instance only
-// (won't coordinate across multiple serverless instances). Good enough as a
-// stopgap; a real deployment should use a shared store (e.g. Redis).
-const MAX_ATTEMPTS  = 5
-const WINDOW_MS     = 15 * 60 * 1000
-const attempts = new Map<string, { count: number; resetAt: number }>()
-
-function isLockedOut(ip: string): boolean {
-  const entry = attempts.get(ip)
-  if (!entry) return false
-  if (Date.now() > entry.resetAt) {
-    attempts.delete(ip)
-    return false
-  }
-  return entry.count >= MAX_ATTEMPTS
-}
-
-function recordFailure(ip: string) {
-  const entry = attempts.get(ip)
-  if (!entry || Date.now() > entry.resetAt) {
-    attempts.set(ip, { count: 1, resetAt: Date.now() + WINDOW_MS })
-  } else {
-    entry.count++
-  }
-}
 
 function timingSafeStringEqual(a: string, b: string): boolean {
   const bufA = Buffer.from(a)
@@ -44,9 +19,9 @@ function timingSafeStringEqual(a: string, b: string): boolean {
 }
 
 export async function POST(req: Request) {
-  const ip = req.headers.get('x-forwarded-for') ?? 'unknown'
+  const ip = getClientIp(req)
 
-  if (isLockedOut(ip)) {
+  if (!rateLimit(`admin-auth:${ip}`, 5, 15 * 60 * 1000)) {
     return NextResponse.json({ error: 'Too many attempts — try again later' }, { status: 429 })
   }
 
@@ -56,10 +31,8 @@ export async function POST(req: Request) {
   const validPassword = typeof password === 'string' && timingSafeStringEqual(password, process.env.ADMIN_PASSWORD ?? '')
 
   if (!validEmail || !validPassword) {
-    recordFailure(ip)
     return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
   }
-  attempts.delete(ip)
 
   const token = await new SignJWT({ email })
     .setProtectedHeader({ alg: 'HS256' })

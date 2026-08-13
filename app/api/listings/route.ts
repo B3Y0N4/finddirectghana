@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase-server'
 import { getSession } from '@/lib/auth'
 import { uploadFile } from '@/lib/storage'
+import { cityForNeighborhood } from '@/lib/properties'
+import { isValidGhanaPhone } from '@/lib/validation'
+import { rateLimit, getClientIp } from '@/lib/rateLimit'
 
 function toSlug(title: string): string {
   return (
@@ -13,6 +16,10 @@ function toSlug(title: string): string {
 
 export async function POST(req: Request) {
   try {
+    if (!rateLimit(`listings-post:${getClientIp(req)}`, 10, 60 * 60 * 1000)) {
+      return NextResponse.json({ error: 'Too many submissions — try again later' }, { status: 429 })
+    }
+
     const session = await getSession()
     if (!session) {
       return NextResponse.json({ error: 'Sign in to continue' }, { status: 401 })
@@ -21,7 +28,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Only landlord accounts can list a property' }, { status: 403 })
     }
 
-    const fd      = await req.formData()
+    const fd = await req.formData()
+
+    const phone = (fd.get('phone') as string) || ''
+    if (!isValidGhanaPhone(phone)) {
+      return NextResponse.json({ error: 'Enter a valid Ghana phone number' }, { status: 400 })
+    }
+
     const sb      = createServerClient()
     const ts      = Date.now()
     const ownerId = session.sub
@@ -67,7 +80,7 @@ export async function POST(req: Request) {
       features:             JSON.parse((fd.get('features') as string) || '[]'),
       neighborhood:         fd.get('neighborhood'),
       address:              fd.get('address')    || null,
-      city:                 'Accra',
+      city:                 cityForNeighborhood(fd.get('neighborhood') as string),
       price_ghs:            Number(fd.get('price')),
       advance_months:       Number(fd.get('advanceMonths')) || 12,
       price_negotiable:     fd.get('priceNegotiable') === 'true',

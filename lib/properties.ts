@@ -324,10 +324,22 @@ export const neighborhoods = [
   'Tema Community 9', 'Ashaiman', 'Dansoman', 'Kasoa',
 ]
 
+const NEIGHBORHOOD_CITY: Record<string, string> = {
+  'Tema Community 9': 'Tema',
+  'Ashaiman':          'Tema',
+  'Kasoa':             'Kasoa',
+}
+
+/** Derives the city from a neighborhood — most of the list is Accra proper. */
+export function cityForNeighborhood(neighborhood: string): string {
+  return NEIGHBORHOOD_CITY[neighborhood] ?? 'Accra'
+}
+
 export const propertyTypes = [
   { value: 'apartment',        label: 'Apartment' },
   { value: 'house',            label: 'House' },
   { value: 'chamber_and_hall', label: 'Chamber & Hall' },
   { value: 'studio',           label: 'Studio' },
   { value: 'townhouse',        label: 'Townhouse' },
+  { value: 'hotel_hostel',     label: 'Hotel / Hostel' },
 ]

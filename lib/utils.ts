@@ -17,6 +17,7 @@ export function propertyTypeLabel(type: PropertyType): string {
     chamber_and_hall: 'Chamber & Hall',
     studio:           'Studio',
     townhouse:        'Townhouse',
+    hotel_hostel:     'Hotel / Hostel',
   }
   return labels[type]
 }

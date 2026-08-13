@@ -1,4 +1,4 @@
-export type PropertyType = 'apartment' | 'house' | 'chamber_and_hall' | 'studio' | 'townhouse'
+export type PropertyType = 'apartment' | 'house' | 'chamber_and_hall' | 'studio' | 'townhouse' | 'hotel_hostel'
 export type PropertyStatus = 'available' | 'rented' | 'paused'
 export type VerificationLevel = 'none' | 'phone' | 'full'
 

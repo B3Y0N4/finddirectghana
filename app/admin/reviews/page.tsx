@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { CheckCircle, XCircle, Star } from 'lucide-react'
+import { CheckCircle, XCircle, ShieldCheck, Star } from 'lucide-react'
 
 interface Review {
   id:            string
@@ -14,18 +14,19 @@ interface Review {
   title:         string
   body:          string
   status:        string
+  verified:      boolean
   created_at:    string
 }
 
 function ReviewRow({ review: r, onAction }: { review: Review; onAction: () => void }) {
   const [busy, setBusy] = useState(false)
 
-  async function act(status: 'approved' | 'rejected') {
+  async function act(patch: { status?: 'approved' | 'rejected'; verified?: boolean }) {
     setBusy(true)
     await fetch('/api/admin/reviews', {
       method:  'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ id: r.id, status }),
+      body:    JSON.stringify({ id: r.id, ...patch }),
     })
     setBusy(false)
     onAction()
@@ -67,24 +68,38 @@ function ReviewRow({ review: r, onAction }: { review: Review; onAction: () => vo
         </div>
       )}
 
-      {r.status === 'pending' && (
-        <div className="flex gap-2 mt-3 pt-3 border-t border-gray-100">
-          <button
-            onClick={() => act('approved')}
-            disabled={busy}
-            className="flex items-center gap-1.5 bg-ghana-green text-white text-xs font-semibold px-3 py-1.5 rounded-lg hover:bg-ghana-green-dark transition-colors disabled:opacity-40"
-          >
-            <CheckCircle className="w-3.5 h-3.5" /> Approve
-          </button>
-          <button
-            onClick={() => act('rejected')}
-            disabled={busy}
-            className="flex items-center gap-1.5 bg-red-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg hover:bg-red-600 transition-colors disabled:opacity-40"
-          >
-            <XCircle className="w-3.5 h-3.5" /> Reject
-          </button>
-        </div>
-      )}
+      <div className="flex gap-2 mt-3 pt-3 border-t border-gray-100 flex-wrap">
+        {r.status === 'pending' && (
+          <>
+            <button
+              onClick={() => act({ status: 'approved' })}
+              disabled={busy}
+              className="flex items-center gap-1.5 bg-ghana-green text-white text-xs font-semibold px-3 py-1.5 rounded-lg hover:bg-ghana-green-dark transition-colors disabled:opacity-40"
+            >
+              <CheckCircle className="w-3.5 h-3.5" /> Approve
+            </button>
+            <button
+              onClick={() => act({ status: 'rejected' })}
+              disabled={busy}
+              className="flex items-center gap-1.5 bg-red-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg hover:bg-red-600 transition-colors disabled:opacity-40"
+            >
+              <XCircle className="w-3.5 h-3.5" /> Reject
+            </button>
+          </>
+        )}
+        <button
+          onClick={() => act({ verified: !r.verified })}
+          disabled={busy}
+          title="Manual editorial call — no automated way to confirm a reviewer actually rented from this landlord"
+          className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 ${
+            r.verified
+              ? 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+              : 'bg-white border border-gray-200 text-gray-500 hover:border-blue-300 hover:text-blue-600'
+          }`}
+        >
+          <ShieldCheck className="w-3.5 h-3.5" /> {r.verified ? 'Verified' : 'Mark Verified'}
+        </button>
+      </div>
     </div>
   )
 }

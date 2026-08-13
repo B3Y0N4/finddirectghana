@@ -2,9 +2,14 @@ import { NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase-server'
 import { getSession } from '@/lib/auth'
 import { reviewSchema } from '@/lib/validation'
+import { rateLimit, getClientIp } from '@/lib/rateLimit'
 
 export async function POST(req: Request) {
   try {
+    if (!rateLimit(`reviews-post:${getClientIp(req)}`, 10, 60 * 60 * 1000)) {
+      return NextResponse.json({ error: 'Too many submissions — try again later' }, { status: 429 })
+    }
+
     const session = await getSession()
     if (!session) {
       return NextResponse.json({ error: 'Sign in to continue' }, { status: 401 })
