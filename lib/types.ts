@@ -36,6 +36,8 @@ export interface OwnerListing {
 // (those stay tied to the original onboarding submission).
 export interface EditableListing {
   slug: string
+  status: ListingRawStatus
+  admin_notes: string | null
   title: string
   type: PropertyType
   description: string

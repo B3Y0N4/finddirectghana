@@ -162,6 +162,8 @@ export async function getListingsForOwner(ownerId: string): Promise<OwnerListing
 function rowToEditableListing(row: Record<string, any>): EditableListing {
   return {
     slug:              row.slug,
+    status:            row.status,
+    admin_notes:       row.admin_notes ?? null,
     title:             row.title,
     type:              row.type as PropertyType,
     description:       row.description ?? '',
@@ -183,9 +185,10 @@ function rowToEditableListing(row: Record<string, any>): EditableListing {
 
 /**
  * A single listing for the edit form — scoped to a specific owner.
- * Returns null if the slug doesn't exist, isn't owned by this user, or
- * hasn't passed moderation yet (same "already approved" guard the status
- * toggle uses), so a non-owner or a still-pending listing can't be edited.
+ * Returns null if the slug doesn't exist, isn't owned by this user, or is
+ * still pending (nothing to edit yet — it hasn't been reviewed once).
+ * Rejected listings ARE included, so a landlord can fix and resubmit them
+ * (see PUT /api/listings/[slug], which flips rejected -> pending on save).
  */
 export async function getListingForEdit(slug: string, ownerId: string): Promise<EditableListing | null> {
   if (!hasSupabase) return null
@@ -198,7 +201,7 @@ export async function getListingForEdit(slug: string, ownerId: string): Promise<
     .select('*')
     .eq('slug', slug)
     .eq('owner_id', ownerId)
-    .in('status', ['approved', 'rented', 'paused'])
+    .in('status', ['approved', 'rented', 'paused', 'rejected'])
     .single()
 
   if (error || !data) return null

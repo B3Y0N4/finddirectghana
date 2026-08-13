@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, CheckCircle, Upload, X } from 'lucide-react'
+import { AlertTriangle, ArrowLeft, CheckCircle, Upload, X } from 'lucide-react'
 import { propertyTypes, neighborhoods } from '@/lib/properties'
 import { cn } from '@/lib/utils'
 import type { EditableListing } from '@/lib/types'
@@ -49,6 +49,9 @@ export default function EditListingForm({ listing }: Props) {
   const [submitting,       setSubmitting]       = useState(false)
   const [submitError,      setSubmitError]      = useState('')
   const [saved,            setSaved]            = useState(false)
+  const [savedStatus,      setSavedStatus]      = useState<string | null>(null)
+
+  const isRejected = listing.status === 'rejected'
 
   function set(key: string, value: unknown) {
     setForm(f => ({ ...f, [key]: value }))
@@ -128,6 +131,7 @@ export default function EditListingForm({ listing }: Props) {
       setNewPhotoFiles([])
       setNewPhotoPreviews([])
       setSaved(true)
+      setSavedStatus(json.status ?? null)
       router.refresh()
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } catch (err) {
@@ -145,13 +149,30 @@ export default function EditListingForm({ listing }: Props) {
           <ArrowLeft className="w-4 h-4" /> Back to My Listings
         </Link>
 
-        <h1 className="font-display font-bold text-ink text-2xl mb-1">Edit Listing</h1>
+        <h1 className="font-display font-bold text-ink text-2xl mb-1">
+          {isRejected ? 'Fix & Resubmit Listing' : 'Edit Listing'}
+        </h1>
         <p className="text-muted text-sm mb-6">{listing.title}</p>
+
+        {isRejected && !saved && (
+          <div className="flex gap-2.5 bg-ghana-red/5 border border-ghana-red/20 rounded-card p-4 mb-4">
+            <AlertTriangle className="w-4 h-4 text-ghana-red flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="text-ink font-semibold text-sm mb-1">This listing was rejected</p>
+              {listing.admin_notes && (
+                <p className="text-ink text-sm leading-relaxed mb-1">{listing.admin_notes}</p>
+              )}
+              <p className="text-muted text-xs">Fix the issue below and resubmit — it goes back to our review queue, same as a new listing.</p>
+            </div>
+          </div>
+        )}
 
         {saved && (
           <div className="bg-ghana-green-50 border border-ghana-green-100 rounded-card p-3 mb-4 flex items-center gap-2">
             <CheckCircle className="w-4 h-4 text-ghana-green flex-shrink-0" />
-            <p className="text-ghana-green text-sm font-semibold">Changes saved.</p>
+            <p className="text-ghana-green text-sm font-semibold">
+              {savedStatus === 'pending' ? 'Resubmitted for review — usually reviewed within a few hours.' : 'Changes saved.'}
+            </p>
           </div>
         )}
 
@@ -375,7 +396,7 @@ export default function EditListingForm({ listing }: Props) {
             className="w-full flex items-center justify-center gap-2 bg-ghana-green text-white font-bold text-sm py-3.5 rounded-btn hover:bg-ghana-green-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <CheckCircle className="w-4 h-4" />
-            {submitting ? 'Saving...' : 'Save Changes'}
+            {submitting ? 'Saving...' : isRejected ? 'Save & Resubmit for Review' : 'Save Changes'}
           </button>
         </form>
       </div>

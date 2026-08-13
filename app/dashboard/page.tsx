@@ -97,11 +97,21 @@ export default async function DashboardPage() {
                   <p className="text-muted text-xs mb-1">{listing.neighborhood}</p>
                   <p className="text-ink font-semibold text-sm mb-2">{formatPrice(listing.price_ghs)}<span className="text-muted font-normal text-xs">/mo</span></p>
 
-                  {listing.status === 'rejected' && listing.admin_notes && (
-                    <div className="flex gap-2 bg-ghana-red/5 border border-ghana-red/15 rounded-btn px-3 py-2 mb-2">
-                      <AlertTriangle className="w-3.5 h-3.5 text-ghana-red flex-shrink-0 mt-0.5" />
-                      <p className="text-xs text-ink leading-relaxed">{listing.admin_notes}</p>
-                    </div>
+                  {listing.status === 'rejected' && (
+                    <>
+                      {listing.admin_notes && (
+                        <div className="flex gap-2 bg-ghana-red/5 border border-ghana-red/15 rounded-btn px-3 py-2 mb-2">
+                          <AlertTriangle className="w-3.5 h-3.5 text-ghana-red flex-shrink-0 mt-0.5" />
+                          <p className="text-xs text-ink leading-relaxed">{listing.admin_notes}</p>
+                        </div>
+                      )}
+                      <Link
+                        href={`/dashboard/${listing.slug}/edit`}
+                        className="inline-block text-xs font-semibold px-3 py-2 rounded-btn bg-ghana-green text-white hover:bg-ghana-green-dark transition-colors"
+                      >
+                        Fix &amp; Resubmit
+                      </Link>
+                    </>
                   )}
                   {listing.status === 'pending' && (
                     <p className="text-xs text-muted">Usually reviewed within a few hours.</p>
