@@ -43,17 +43,43 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_GH',
     siteName: 'Find Direct Ghana',
-    url: 'https://finddirectghana.com',
+    url: 'https://finddirectgh.com',
   },
+  metadataBase: new URL('https://finddirectgh.com'),
   twitter: {
     card: 'summary_large_image',
   },
+}
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      name: 'Find Direct Ghana',
+      url: 'https://finddirectgh.com',
+      logo: 'https://finddirectgh.com/icon',
+      description: 'Owner-direct property listings in Accra, Ghana — no agents, no viewing fees, no commission.',
+      areaServed: { '@type': 'City', name: 'Accra' },
+    },
+    {
+      '@type': 'WebSite',
+      name: 'Find Direct Ghana',
+      url: 'https://finddirectgh.com',
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: 'https://finddirectgh.com/listings?q={search_term_string}',
+        'query-input': 'required name=search_term_string',
+      },
+    },
+  ],
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${poppins.variable} ${inter.variable}`}>
       <body className="font-sans antialiased bg-page-bg text-ink">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <Nav />
         <main className="pb-[calc(58px+env(safe-area-inset-bottom))] md:pb-0">
           {children}

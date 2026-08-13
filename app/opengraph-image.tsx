@@ -103,7 +103,7 @@ export default function OGImage() {
               </div>
             ))}
           </div>
-          <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: 16, fontFamily: 'sans-serif' }}>finddirectghana.com</span>
+          <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: 16, fontFamily: 'sans-serif' }}>finddirectgh.com</span>
         </div>
       </div>
     </div>,

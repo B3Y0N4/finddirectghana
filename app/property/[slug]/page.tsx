@@ -51,8 +51,32 @@ export default async function PropertyPage({ params }: Props) {
     getLandlordRating(landlordId, landlordSlug),
   ])
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'RealEstateListing',
+    name: p.title,
+    description: p.description,
+    url: `https://finddirectgh.com/property/${p.slug}`,
+    datePosted: p.listed_date,
+    image: p.images,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: p.neighborhood,
+      addressRegion: p.city,
+      addressCountry: 'GH',
+    },
+    numberOfRooms: p.bedrooms,
+    offers: {
+      '@type': 'Offer',
+      price: p.price_ghs,
+      priceCurrency: 'GHS',
+      availability: isRented ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
+    },
+  }
+
   return (
     <div className="pt-nav pb-20 lg:pb-0">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       {/* Breadcrumb */}
       <div className="border-b border-border-col bg-white">
         <div className="max-w-content mx-auto px-4 lg:px-8 py-3 flex items-center gap-2 text-xs text-muted">

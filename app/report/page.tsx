@@ -124,7 +124,7 @@ export default function ReportPage() {
             <input
               type="text"
               className={inputClass}
-              placeholder="e.g. finddirectghana.com/property/furnished-2bed-east-legon"
+              placeholder="e.g. finddirectgh.com/property/furnished-2bed-east-legon"
               value={form.url}
               onChange={e => set('url', e.target.value)}
               required

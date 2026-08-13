@@ -14,13 +14,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const post = getPost(slug)
   if (!post) return {}
+  const url = `https://finddirectgh.com/blog/${slug}`
   return {
     title: post.title,
     description: post.excerpt,
+    alternates: { canonical: url },
     openGraph: {
       title: post.title,
       description: post.excerpt,
       type: 'article',
+      url,
       publishedTime: post.publishedAt,
     },
   }
@@ -39,8 +42,20 @@ export default async function BlogPostPage({ params }: Props) {
 
   const related = getRelatedPosts(slug, 3)
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.publishedAt,
+    url: `https://finddirectgh.com/blog/${post.slug}`,
+    author: { '@type': 'Organization', name: 'Find Direct Ghana' },
+    publisher: { '@type': 'Organization', name: 'Find Direct Ghana' },
+  }
+
   return (
     <div className="pt-nav bg-page-bg">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* Article hero */}
       <section className="bg-ghana-green-dark text-white py-14 lg:py-20">

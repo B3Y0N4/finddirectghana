@@ -479,6 +479,135 @@ export const posts: BlogPost[] = [
     ],
   },
 
+  /* ─────────────────────────────────────────────────────────── */
+  {
+    slug:          'east-legon-cantonments-airport-residential-compared',
+    title:         'East Legon vs Cantonments vs Airport Residential: Which "Premium" Address Is Actually Worth the Rent?',
+    excerpt:       'Three neighborhoods get called Accra\'s best address, often by the same agent trying to rent you all three. Here is what actually separates them — proximity, prestige, and the real GHS difference — so you stop paying for a name you cannot explain.',
+    category:      'Neighborhood Guide',
+    categoryColor: 'green',
+    readTime:      8,
+    publishedAt:   '2026-08-13',
+    featured:      false,
+    body: [
+      { type: 'p', text: 'Ask three different agents where Accra\'s "best" neighborhood is and you will get three different answers, usually depending on which of the three they currently have a listing in. East Legon, Cantonments, and Airport Residential all get sold as the top tier — and they are all genuinely good addresses. But they are not the same product, and the GHS 3,000 to 5,000 gap between them at the high end is not random.' },
+
+      { type: 'h2', text: 'What Is Actually Being Priced' },
+
+      { type: 'p', text: 'Strip away the marketing language and each of these three areas is selling a different kind of proximity. East Legon sells space and newness — wide plots, newer construction, room to build big. Cantonments sells institutional density — it is where the embassies, the older diplomatic residences, and Ghana\'s most senior private-sector addresses actually are. Airport Residential sells exactly what the name says: you can be at Kotoka International Airport in under 20 minutes, which matters enormously if your work has you on a plane every few weeks.' },
+
+      { type: 'h2', text: 'East Legon: Space, Newness, Volume' },
+
+      { type: 'p', text: 'A 2-bedroom furnished apartment in East Legon runs GHS 4,500 to GHS 8,000 a month. Unfurnished 3-bedroom houses start around GHS 6,000. The area has the largest supply of the three — more streets, more compounds, more new construction — which means more choice at every budget within the premium tier, and slightly more room to negotiate than in the other two.' },
+
+      { type: 'callout', variant: 'gold', text: 'East Legon is for: people who want the most house for the money at this tier, and do not need to be within a 10-minute walk of an embassy.' },
+
+      { type: 'h2', text: 'Cantonments: Smaller, Older, More Expensive' },
+
+      { type: 'p', text: 'Cantonments has a fraction of East Legon\'s inventory, and it shows in the price. A comparable 3-bedroom furnished house runs GHS 7,000 to GHS 12,000, and the true top end — the older diplomatic-standard residences near Ridge and the Osu Oxford Street corridor — reaches GHS 15,000 to GHS 25,000. You are not paying for more square footage than East Legon. You are paying for an older, more established address with a smaller, more controlled supply of listings, which tends to mean longer-tenured landlords and less turnover.' },
+
+      { type: 'p', text: 'This is genuinely the address where a large share of Accra\'s embassies, ambassadorial residences, and senior multinational staff are based. If your employer is paying a housing allowance specifically because your role requires that address, the premium buys something real. If you are paying it out of your own pocket for the name alone, it is worth being honest with yourself about that.' },
+
+      { type: 'h2', text: 'Airport Residential: Paying for Minutes, Not Square Metres' },
+
+      { type: 'p', text: 'Airport Residential sits close to East Legon in price — a furnished 2-bedroom runs GHS 4,000 to GHS 7,500, houses from GHS 8,000 to GHS 14,000 — but the value proposition is narrower and more specific. You are buying airport proximity, full stop. For airline crew, frequent international travelers, and anyone whose work involves regular flights, being 15 to 20 minutes from check-in instead of 40 is worth real money. For someone who flies twice a year, that same premium buys nothing they will actually use.' },
+
+      { type: 'stat', stats: [
+        { value: '15–20 min',  label: 'Airport Residential to Kotoka' },
+        { value: '25–35 min',  label: 'Cantonments to Kotoka (via Ring Road)' },
+        { value: '30–45 min',  label: 'East Legon to Kotoka (traffic-dependent)' },
+      ]},
+
+      { type: 'h2', text: 'The Honest Verdict' },
+
+      { type: 'p', text: 'There is no single "best" among these three — there is only the one that matches what you are actually optimizing for. Space and value within the premium tier: East Legon. An established, embassy-adjacent address and you are not paying it yourself: Cantonments. Genuine, regular need to be near the airport: Airport Residential. Picking based on which name sounds most impressive at a dinner party is how people end up overpaying for a commute or a location they never actually needed.' },
+
+      { type: 'callout', variant: 'green', text: 'All three neighborhoods have direct-from-owner listings on Find Direct Ghana with real, current asking prices — not an agent\'s opening number. Compare what is actually available before you decide which premium you are paying for.' },
+    ],
+  },
+
+  /* ─────────────────────────────────────────────────────────── */
+  {
+    slug:          'osu-vs-labone-accra-neighborhoods',
+    title:         'Osu vs Labone: The Real Difference Between Accra\'s Two Most Confused Neighborhoods',
+    excerpt:       'They share a border, and some agents blur the line on purpose because one name rents faster than the other. Here is the actual difference between Osu and Labone — noise versus quiet, price versus price — and how to tell which one you are really looking at.',
+    category:      'Neighborhood Guide',
+    categoryColor: 'green',
+    readTime:      7,
+    publishedAt:   '2026-08-14',
+    featured:      false,
+    body: [
+      { type: 'p', text: 'Osu and Labone sit next to each other on the map, and in a lot of listings they sit on top of each other too. It is common — common enough that it is worth calling out directly — for a property that is actually in Labone to be advertised as "Osu" because Osu is the more recognizable, faster-renting name. Both are good neighborhoods. They are not the same neighborhood, and the difference matters more than the shared border suggests.' },
+
+      { type: 'h2', text: 'Osu: Energy, Noise, Walkability' },
+
+      { type: 'p', text: 'Osu is Accra\'s most socially alive residential area. Oxford Street runs through it — restaurants, boutiques, nightlife, foot traffic at almost any hour. A self-contained chamber and hall runs GHS 1,800 to GHS 3,000; a proper 2-bedroom apartment in a newer building starts at GHS 3,500 and reaches GHS 7,000 with security and parking. The roads are narrower and busier than most premium areas, and the noise level — traffic, music, people — is part of what you are choosing when you choose Osu.' },
+
+      { type: 'h2', text: 'Labone: The Quiet Next Door' },
+
+      { type: 'p', text: 'Walk five minutes off Oxford Street toward Cantonments and the character changes fast. Labone is residential, leafy, and considerably quieter — closer in feel to Cantonments than to the Osu it borders. A 2-bedroom unfurnished apartment runs GHS 3,500 to GHS 6,000, and a 3-bedroom house reaches GHS 6,500 to GHS 11,000 — a step above equivalent Osu pricing, reflecting the quieter streets and the area\'s proximity to the embassy district rather than to nightlife.' },
+
+      { type: 'callout', variant: 'gold', text: 'Labone is for: people who want Osu\'s central location without Osu\'s noise, and are willing to pay a modest premium for the quiet.' },
+
+      { type: 'h2', text: 'Why Landlords Blur the Line' },
+
+      { type: 'p', text: 'A property genuinely in Labone gets more inquiries listed as "Osu" — the name is simply more recognizable to a first-time renter or an incoming expat doing a quick search. It is a small, mostly harmless piece of marketing spin, but it means you cannot fully trust a listing\'s stated neighborhood without checking. Ask for the nearest cross-street, or a rough GPS pin, before you commit to a viewing on the strength of the neighborhood name alone.' },
+
+      { type: 'callout', variant: 'red', text: 'On Find Direct Ghana, every property page shows an approximate map of the actual neighborhood location — not just a name typed into a form. Use it to sanity-check where you are really looking before you make the trip.' },
+
+      { type: 'h2', text: 'Which One Fits You' },
+
+      { type: 'p', text: 'If your evenings matter as much as your commute — restaurants downstairs, nightlife within walking distance, energy on the street — Osu delivers that in a way almost no other Accra neighborhood does. If you want to be five minutes from all of it without living inside it, Labone gives you the same central location with the volume turned down. Neither is the "better" neighborhood. They are two different answers to what you actually want your evenings to look like.' },
+    ],
+  },
+
+  /* ─────────────────────────────────────────────────────────── */
+  {
+    slug:          'kasoa-dansoman-ashaiman-overlooked-accra-suburbs',
+    title:         'Kasoa, Dansoman, and Ashaiman: The Honest Truth About Accra\'s Most Overlooked Suburbs',
+    excerpt:       'These three areas house a huge share of greater Accra\'s working population and appear in almost no "best neighborhoods" guide, because they were never written to be aspirational. Here is what renting in each one is really like — the real prices, the real trade-offs, and who each one actually suits.',
+    category:      'Neighborhood Guide',
+    categoryColor: 'green',
+    readTime:      9,
+    publishedAt:   '2026-08-15',
+    featured:      false,
+    body: [
+      { type: 'p', text: 'Open almost any glossy "where to live in Accra" guide and you will not find Kasoa, Dansoman, or Ashaiman in it. That is not because nobody lives there — a huge share of greater Accra\'s working population lives in exactly these three areas. It is because these guides are written to sell an aspirational fantasy, and these neighborhoods were never built to be one. They were built to be affordable, functional, and close enough to work. For most people renting in Accra, that is a far more useful thing to be.' },
+
+      { type: 'h2', text: 'Kasoa: The Largest, the Cheapest, the Most Misunderstood' },
+
+      { type: 'p', text: 'Kasoa sits west of Accra proper, technically in the Central Region, and it has grown faster than almost anywhere else in the greater metro area over the last decade. The reputation is almost entirely about the N1 highway traffic — and it is deserved; the commute into central Accra can run 60 to 90 minutes at peak times, sometimes worse. What the reputation leaves out is the actual housing stock: newer, larger, better-built apartment complexes than you will find at equivalent prices almost anywhere closer to town.' },
+
+      { type: 'p', text: 'A 2-bedroom apartment in Kasoa runs GHS 1,200 to GHS 2,200. A 3-bedroom house in a gated estate reaches GHS 1,800 to GHS 3,000 — roughly a third of what equivalent square footage costs in East Legon. If your work allows a flexible schedule around the worst traffic hours, or is based on the western side of the city, the trade-off tilts heavily in Kasoa\'s favour.' },
+
+      { type: 'h2', text: 'Dansoman: The Established Middle, Closer Than People Assume' },
+
+      { type: 'p', text: 'Dansoman is older and more centrally located than its reputation suggests — a long-established, largely middle-class residential area with decent road infrastructure and a settled community, not a fringe suburb. A self-contained chamber and hall runs GHS 1,000 to GHS 1,800; a 2-bedroom apartment GHS 2,000 to GHS 3,500. The area sits close enough to the coastal road that access to central Accra is considerably more manageable than Kasoa\'s.' },
+
+      { type: 'callout', variant: 'gold', text: 'Dansoman is for: people who want an established, family-friendly community with real infrastructure, without paying premium-tier prices for it.' },
+
+      { type: 'h2', text: 'Ashaiman: Industrial, Working-Class, Genuinely Undervalued for the Right Person' },
+
+      { type: 'p', text: 'Ashaiman sits directly adjacent to Tema and is the most industrial and working-class of the three — and the cheapest. A self-contained room runs GHS 700 to GHS 1,400; a 2-bedroom house with its own compound GHS 1,600 to GHS 2,800. For anyone working in the Tema port, the industrial zone, or the surrounding manufacturing corridor, Ashaiman is not a compromise you settle for. It is the correct choice — cheaper, and closer to the job than renting in Accra proper and commuting out every day.' },
+
+      { type: 'stat', stats: [
+        { value: 'GHS 700',   label: 'Cheapest self-contained room (Ashaiman)' },
+        { value: 'GHS 1,000', label: 'Cheapest self-contained room (Dansoman)' },
+        { value: 'GHS 1,200', label: 'Cheapest 2-bed apartment (Kasoa)' },
+      ]},
+
+      { type: 'h2', text: 'Who Each One Actually Suits' },
+
+      { type: 'list', items: [
+        'Kasoa — best value-for-space in greater Accra, if your commute can absorb the N1 traffic or your work is on the western side of the city.',
+        'Dansoman — an established, centrally-located middle ground for anyone who wants real infrastructure without premium-tier prices.',
+        'Ashaiman — the practical, correct choice if your work is in Tema, the port, or the surrounding industrial zone, not a fallback.',
+      ]},
+
+      { type: 'callout', variant: 'green', text: 'None of these three need to be a compromise. Browse verified, direct-from-owner listings in all three on Find Direct Ghana and see the real current prices for yourself — no agent markup, no viewing fee.' },
+    ],
+  },
+
 ]
 
 export function getPost(slug: string): BlogPost | undefined {
