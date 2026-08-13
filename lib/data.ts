@@ -2,7 +2,7 @@
  * Central data access layer.
  * Reads from Supabase when env vars are present, falls back to static seed data.
  */
-import type { EditableListing, OwnerListing, Property, PropertyType, VerificationLevel } from './types'
+import type { AdvanceFlexibility, EditableListing, OwnerListing, Property, PropertyType, VerificationLevel } from './types'
 import { properties as staticProperties } from './properties'
 
 const hasSupabase =
@@ -32,6 +32,7 @@ function rowToProperty(row: Record<string, any>): Property {
     city:           row.city ?? 'Accra',
     price_ghs:      Number(row.price_ghs),
     advance_months: row.advance_months ?? 12,
+    advance_flexibility: (row.advance_flexibility as AdvanceFlexibility) ?? 'fixed',
     bedrooms:       row.bedrooms ?? 0,
     bathrooms:      row.bathrooms ?? 0,
     size_sqm:       row.size_sqm ?? null,
@@ -175,6 +176,7 @@ function rowToEditableListing(row: Record<string, any>): EditableListing {
     address:           row.address ?? '',
     price_ghs:         Number(row.price_ghs),
     advance_months:    row.advance_months ?? 12,
+    advance_flexibility: (row.advance_flexibility as AdvanceFlexibility) ?? 'fixed',
     price_negotiable:  row.price_negotiable ?? false,
     video_url:         row.video_url ?? '',
     image_urls:        row.image_urls ?? [],

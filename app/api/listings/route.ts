@@ -35,6 +35,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Enter a valid Ghana phone number' }, { status: 400 })
     }
 
+    const ADVANCE_FLEXIBILITY_VALUES = ['fixed', 'negotiable', 'shorter_ok', 'monthly']
+    const advanceFlexibility = (fd.get('advanceFlexibility') as string) || 'fixed'
+    if (!ADVANCE_FLEXIBILITY_VALUES.includes(advanceFlexibility)) {
+      return NextResponse.json({ error: 'Invalid advance flexibility value' }, { status: 400 })
+    }
+
     const sb      = createServerClient()
     const ts      = Date.now()
     const ownerId = session.sub
@@ -83,6 +89,7 @@ export async function POST(req: Request) {
       city:                 cityForNeighborhood(fd.get('neighborhood') as string),
       price_ghs:            Number(fd.get('price')),
       advance_months:       Number(fd.get('advanceMonths')) || 12,
+      advance_flexibility:  advanceFlexibility,
       price_negotiable:     fd.get('priceNegotiable') === 'true',
       description:          fd.get('description') || null,
       video_url:            fd.get('videoUrl')    || null,

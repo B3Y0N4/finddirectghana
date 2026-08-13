@@ -1,6 +1,7 @@
 export type PropertyType = 'apartment' | 'house' | 'chamber_and_hall' | 'studio' | 'townhouse' | 'hotel_hostel'
 export type PropertyStatus = 'available' | 'rented' | 'paused'
 export type VerificationLevel = 'none' | 'phone' | 'full'
+export type AdvanceFlexibility = 'fixed' | 'negotiable' | 'shorter_ok' | 'monthly'
 
 export interface Owner {
   id: string | null
@@ -49,6 +50,7 @@ export interface EditableListing {
   address: string
   price_ghs: number
   advance_months: number
+  advance_flexibility: AdvanceFlexibility
   price_negotiable: boolean
   video_url: string
   image_urls: string[]
@@ -66,6 +68,7 @@ export interface Property {
   city: string
   price_ghs: number
   advance_months: number
+  advance_flexibility: AdvanceFlexibility
   bedrooms: number
   bathrooms: number
   size_sqm: number | null

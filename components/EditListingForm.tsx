@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { AlertTriangle, ArrowLeft, CheckCircle, Upload, X } from 'lucide-react'
-import { propertyTypes, neighborhoods, propertyFeatures, advanceMonthOptions } from '@/lib/properties'
+import { propertyTypes, neighborhoods, propertyFeatures, advanceMonthOptions, advanceFlexibilityOptions } from '@/lib/properties'
 import { cn } from '@/lib/utils'
 import type { EditableListing } from '@/lib/types'
 
@@ -31,6 +31,7 @@ export default function EditListingForm({ listing }: Props) {
     address:          listing.address,
     price:            String(listing.price_ghs),
     advanceMonths:    String(listing.advance_months),
+    advanceFlexibility: listing.advance_flexibility,
     priceNegotiable:  listing.price_negotiable,
     description:      listing.description,
     videoUrl:         listing.video_url,
@@ -105,6 +106,7 @@ export default function EditListingForm({ listing }: Props) {
       fd.append('address',          form.address)
       fd.append('price',            form.price)
       fd.append('advanceMonths',    form.advanceMonths)
+      fd.append('advanceFlexibility', form.advanceFlexibility)
       fd.append('priceNegotiable',  String(form.priceNegotiable))
       fd.append('description',      form.description)
       fd.append('videoUrl',         form.videoUrl)
@@ -279,6 +281,13 @@ export default function EditListingForm({ listing }: Props) {
               <label className={labelClass}>Advance Payment Required</label>
               <select className={inputClass} value={form.advanceMonths} onChange={e => set('advanceMonths', e.target.value)}>
                 {advanceMonthOptions.map(m => <option key={m} value={m}>{m} months advance</option>)}
+              </select>
+            </div>
+
+            <div>
+              <label className={labelClass}>How flexible is this advance?</label>
+              <select className={inputClass} value={form.advanceFlexibility} onChange={e => set('advanceFlexibility', e.target.value)}>
+                {advanceFlexibilityOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
               </select>
             </div>
 

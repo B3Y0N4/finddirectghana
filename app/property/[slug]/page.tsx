@@ -217,6 +217,7 @@ export default async function PropertyPage({ params }: Props) {
                 title={p.title}
                 price={p.price_ghs}
                 advanceMonths={p.advance_months}
+                advanceFlexibility={p.advance_flexibility}
                 isRented={isRented}
               />
 

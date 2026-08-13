@@ -12,6 +12,7 @@ export const properties: Property[] = [
     city: 'Accra',
     price_ghs: 4500,
     advance_months: 12,
+    advance_flexibility: 'fixed',
     bedrooms: 2,
     bathrooms: 2,
     size_sqm: 95,
@@ -39,6 +40,7 @@ export const properties: Property[] = [
     city: 'Accra',
     price_ghs: 5500,
     advance_months: 12,
+    advance_flexibility: 'negotiable',
     bedrooms: 3,
     bathrooms: 2,
     size_sqm: 180,
@@ -66,6 +68,7 @@ export const properties: Property[] = [
     city: 'Accra',
     price_ghs: 1400,
     advance_months: 12,
+    advance_flexibility: 'shorter_ok',
     bedrooms: 1,
     bathrooms: 1,
     size_sqm: 35,
@@ -92,6 +95,7 @@ export const properties: Property[] = [
     city: 'Accra',
     price_ghs: 3800,
     advance_months: 6,
+    advance_flexibility: 'fixed',
     bedrooms: 1,
     bathrooms: 1,
     size_sqm: 65,
@@ -118,6 +122,7 @@ export const properties: Property[] = [
     city: 'Accra',
     price_ghs: 9500,
     advance_months: 12,
+    advance_flexibility: 'negotiable',
     bedrooms: 4,
     bathrooms: 4,
     size_sqm: 380,
@@ -145,6 +150,7 @@ export const properties: Property[] = [
     city: 'Tema',
     price_ghs: 2800,
     advance_months: 12,
+    advance_flexibility: 'monthly',
     bedrooms: 2,
     bathrooms: 1,
     size_sqm: 80,
@@ -171,6 +177,7 @@ export const properties: Property[] = [
     city: 'Accra',
     price_ghs: 7500,
     advance_months: 6,
+    advance_flexibility: 'shorter_ok',
     bedrooms: 3,
     bathrooms: 3,
     size_sqm: 160,
@@ -197,6 +204,7 @@ export const properties: Property[] = [
     city: 'Accra',
     price_ghs: 1600,
     advance_months: 12,
+    advance_flexibility: 'fixed',
     bedrooms: 1,
     bathrooms: 1,
     size_sqm: 40,
@@ -223,6 +231,7 @@ export const properties: Property[] = [
     city: 'Tema',
     price_ghs: 2000,
     advance_months: 12,
+    advance_flexibility: 'negotiable',
     bedrooms: 2,
     bathrooms: 1,
     size_sqm: 70,
@@ -249,6 +258,7 @@ export const properties: Property[] = [
     city: 'Accra',
     price_ghs: 3200,
     advance_months: 12,
+    advance_flexibility: 'fixed',
     bedrooms: 3,
     bathrooms: 2,
     size_sqm: 130,
@@ -275,6 +285,7 @@ export const properties: Property[] = [
     city: 'Accra',
     price_ghs: 2200,
     advance_months: 6,
+    advance_flexibility: 'monthly',
     bedrooms: 0,
     bathrooms: 1,
     size_sqm: 30,
@@ -301,6 +312,7 @@ export const properties: Property[] = [
     city: 'Accra',
     price_ghs: 2400,
     advance_months: 12,
+    advance_flexibility: 'negotiable',
     bedrooms: 2,
     bathrooms: 1,
     size_sqm: 85,
@@ -360,6 +372,23 @@ export const propertyFeatures = [
   'Gym', 'Fiber Internet', 'Tiled Floors', 'Furnished Kitchen',
   'CCTV', 'Elevator', 'Pet Friendly', 'Solar Backup', 'Water Heater',
 ]
+
+// What the landlord actually told the field rep about the advance, not just
+// the number of months — two properties at the same rent are not equivalent
+// to a tenant if one needs a 12-month lump sum and the other doesn't.
+export const advanceFlexibilityOptions = [
+  { value: 'fixed',      label: 'Fixed — advance is not negotiable' },
+  { value: 'negotiable', label: 'Negotiable — open to discussion' },
+  { value: 'shorter_ok', label: 'Shorter advance accepted' },
+  { value: 'monthly',    label: 'Monthly payment possible' },
+] as const
+
+export const advanceFlexibilityLabels: Record<string, string> = {
+  fixed:      'Fixed',
+  negotiable: 'Negotiable',
+  shorter_ok: 'Shorter advance OK',
+  monthly:    'Monthly payment possible',
+}
 
 // Ceiling extended to 36 — premium-area listings can legitimately ask for
 // up to 3 years advance (see lib/blog.ts's advance-rent coverage).

@@ -4,16 +4,19 @@ import Link from 'next/link'
 import { MessageCircle, Phone, Shield } from 'lucide-react'
 import { formatPrice, waLink } from '@/lib/utils'
 import { useLandlordContact } from '@/lib/useLandlordContact'
+import { advanceFlexibilityLabels } from '@/lib/properties'
+import type { AdvanceFlexibility } from '@/lib/types'
 
 interface Props {
   slug: string
   title: string
   price: number
   advanceMonths: number
+  advanceFlexibility: AdvanceFlexibility
   isRented: boolean
 }
 
-export default function ContactCard({ slug, title, price, advanceMonths, isRented }: Props) {
+export default function ContactCard({ slug, title, price, advanceMonths, advanceFlexibility, isRented }: Props) {
   const contact = useLandlordContact(slug)
   const loginHref = `/auth/login?next=${encodeURIComponent(`/property/${slug}`)}`
 
@@ -27,6 +30,11 @@ export default function ContactCard({ slug, title, price, advanceMonths, isRente
         <p className="text-muted text-xs mt-1">
           {advanceMonths} months advance · {formatPrice(price * advanceMonths)} total advance
         </p>
+        {advanceFlexibility !== 'fixed' && (
+          <p className="inline-block mt-1.5 text-[10px] font-semibold text-ghana-green bg-ghana-green-50 border border-ghana-green-100 rounded-full px-2 py-0.5">
+            {advanceFlexibilityLabels[advanceFlexibility]}
+          </p>
+        )}
       </div>
 
       {isRented ? (

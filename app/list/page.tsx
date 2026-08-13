@@ -7,7 +7,7 @@ import {
   Home, MapPin, Camera, Phone, CheckCircle, ChevronRight,
   Upload, DollarSign, Shield, ArrowLeft, Star,
 } from 'lucide-react'
-import { propertyTypes, neighborhoods, propertyFeatures, advanceMonthOptions } from '@/lib/properties'
+import { propertyTypes, neighborhoods, propertyFeatures, advanceMonthOptions, advanceFlexibilityOptions } from '@/lib/properties'
 import { cn } from '@/lib/utils'
 
 const steps = [
@@ -28,7 +28,7 @@ export default function ListPage() {
   const [form, setForm] = useState({
     type: '', bedrooms: '', bathrooms: '', furnished: false,
     selectedFeatures: [] as string[], neighborhood: '', address: '',
-    price: '', advanceMonths: '12', priceNegotiable: false,
+    price: '', advanceMonths: '12', advanceFlexibility: 'fixed', priceNegotiable: false,
     title: '', description: '', phone: '', name: '', agreeVerify: false,
   })
 
@@ -116,6 +116,7 @@ export default function ListPage() {
       fd.append('address',         form.address)
       fd.append('price',           form.price)
       fd.append('advanceMonths',   form.advanceMonths)
+      fd.append('advanceFlexibility', form.advanceFlexibility)
       fd.append('priceNegotiable', String(form.priceNegotiable))
       fd.append('name',            form.name)
       fd.append('phone',           form.phone)
@@ -436,6 +437,16 @@ export default function ListPage() {
                   <select className={inputClass} value={form.advanceMonths} onChange={e => set('advanceMonths', e.target.value)}>
                     {advanceMonthOptions.map(m => <option key={m} value={m}>{m} months advance</option>)}
                   </select>
+                </div>
+
+                <div>
+                  <label className={labelClass}>How flexible is this advance?</label>
+                  <select className={inputClass} value={form.advanceFlexibility} onChange={e => set('advanceFlexibility', e.target.value)}>
+                    {advanceFlexibilityOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                  </select>
+                  <p className="text-muted text-xs mt-1.5">
+                    Two identical rents are not the same to a tenant if one needs the full advance upfront and the other doesn&apos;t. Costs nothing to be honest here.
+                  </p>
                 </div>
 
                 {/* Negotiable toggle */}
