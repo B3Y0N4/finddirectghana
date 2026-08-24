@@ -34,6 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${p.title} — ${formatPrice(p.price_ghs)}/mo`,
     description: p.description.slice(0, 155),
+    alternates: { canonical: `${SITE_URL}/property/${p.slug}` },
   }
 }
 
